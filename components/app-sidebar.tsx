@@ -1,0 +1,94 @@
+"use client"
+
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import {
+  LayoutDashboard,
+  CalendarDays,
+  LayoutTemplate,
+  Users,
+  BarChart3,
+  Settings,
+  ChefHat,
+} from "lucide-react"
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+
+const navItems = [
+  { title: "Dashboard", href: "/", icon: LayoutDashboard },
+  { title: "Events", href: "/events", icon: CalendarDays },
+  { title: "Templates", href: "/templates", icon: LayoutTemplate },
+  { title: "Volunteers", href: "/volunteers", icon: Users },
+  { title: "Analytics", href: "/analytics", icon: BarChart3 },
+  { title: "Settings", href: "/settings", icon: Settings },
+]
+
+export function AppSidebar() {
+  const pathname = usePathname()
+
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <div className="flex items-center gap-2 px-2 py-2">
+          <div className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+            <ChefHat className="size-4" />
+          </div>
+          <div className="flex flex-col leading-tight">
+            <span className="text-sm font-semibold">TSA Culinary</span>
+            <span className="text-xs text-muted-foreground">Ops Copilot</span>
+          </div>
+        </div>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => {
+                const isActive =
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(item.href)
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      isActive={isActive}
+                      tooltip={item.title}
+                      render={
+                        <Link href={item.href}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      }
+                    />
+                  </SidebarMenuItem>
+                )
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <div className="flex items-center gap-2 px-2 py-2">
+          <Avatar className="size-8">
+            <AvatarFallback>AC</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col leading-tight">
+            <span className="text-sm font-medium">Alex Chen</span>
+            <span className="text-xs text-muted-foreground">Ops Manager</span>
+          </div>
+        </div>
+      </SidebarFooter>
+    </Sidebar>
+  )
+}
