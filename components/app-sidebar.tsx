@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   CalendarDays,
   LayoutTemplate,
-  Users,
   BarChart3,
   Settings,
   ChefHat,
@@ -28,7 +27,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 const navItems = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Events", href: "/events", icon: CalendarDays },
-  { title: "Volunteers", href: "/volunteers", icon: Users },
   { title: "Analytics", href: "/analytics", icon: BarChart3 },
   { title: "Settings", href: "/settings", icon: Settings },
 ]
