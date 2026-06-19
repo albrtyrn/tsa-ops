@@ -83,9 +83,8 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
           <p className="text-sm font-medium">Track borrowings, returns, and owner handoffs in one place.</p>
         </div>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="border border-zinc-200 text-zinc-600 hover:bg-zinc-100"
           onClick={handleAddLoan}
         >
           <Plus className="size-4" />
@@ -94,14 +93,14 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
       </div>
 
       {isAdding ? (
-        <Card>
+        <Card className="border border-border bg-card">
           <CardHeader className="items-start gap-4">
             <CardTitle className="text-sm">New equipment loan</CardTitle>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" onClick={() => setIsAdding(false)}>
                 <X className="size-4" />
               </Button>
-              <Button variant="outline" size="sm" onClick={saveNewLoan}>
+              <Button variant="default" size="sm" onClick={saveNewLoan}>
                 Save
               </Button>
             </div>
@@ -109,46 +108,42 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
           <CardContent className="flex flex-col gap-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Item
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newLoan.item}
                   onChange={(e) => setNewLoan({ ...newLoan, item: e.target.value })}
-                  placeholder="Commercial Rice Cooker"
+                  placeholder="Wok"
                 />
               </div>
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Owner
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newLoan.owner}
                   onChange={(e) => setNewLoan({ ...newLoan, owner: e.target.value })}
-                  placeholder="Grace"
+                  placeholder="Chef Lin"
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
-                  Brought
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                  Date Brought
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newLoan.dateBrought}
                   onChange={(e) => setNewLoan({ ...newLoan, dateBrought: e.target.value })}
                   placeholder="Oct 17"
                 />
               </div>
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
-                  Due back
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                  Due Back
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newLoan.dateReturned}
                   onChange={(e) => setNewLoan({ ...newLoan, dateReturned: e.target.value })}
                   placeholder="Oct 19"
@@ -166,48 +161,44 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
         </Card>
       ) : null}
 
-      <div className="overflow-x-auto border border-zinc-700/50 rounded-lg">
-        <table className="w-full text-left text-sm text-zinc-300">
-          <thead className="border-b border-zinc-700/50 bg-zinc-900/50">
+      <div className="overflow-x-auto border border-border rounded-lg bg-card shadow-sm">
+        <table className="w-full text-left text-sm text-foreground">
+          <thead className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             <tr>
-              <th className="px-4 py-3 font-semibold text-zinc-200">Item</th>
-              <th className="px-4 py-3 font-semibold text-zinc-200">Owner</th>
-              <th className="px-4 py-3 font-semibold text-zinc-200">Brought</th>
-              <th className="px-4 py-3 font-semibold text-zinc-200">Due Back</th>
-              <th className="px-4 py-3 font-semibold text-zinc-200">Returned</th>
-              <th className="px-4 py-3 font-semibold text-zinc-200 text-right">Actions</th>
+              <th className="px-4 py-3">Item</th>
+              <th className="px-4 py-3">Owner</th>
+              <th className="px-4 py-3">Brought</th>
+              <th className="px-4 py-3">Due Back</th>
+              <th className="px-4 py-3">Returned</th>
+              <th className="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-700/30">
+          <tbody className="divide-y divide-border">
             {loans.map((loan) => {
               const isEditing = editingId === loan.id
               const isDeleting = deletingId === loan.id
               return (
-                <tr key={loan.id} className="hover:bg-zinc-800/30 transition-colors">
-                  <td className="px-4 py-3">{isEditing ? (
+                <tr key={loan.id} className="hover:bg-accent/40 transition-colors group">
+                  <td className="px-4 py-3 font-medium">{isEditing ? (
                     <Input
-                      className="w-full border border-zinc-600 dark:border-zinc-700 rounded-md bg-zinc-800 dark:bg-zinc-800/50 px-2 py-1 text-sm text-zinc-100 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                       value={editLoan.item}
                       onChange={(e) => setEditLoan({ ...editLoan, item: e.target.value })}
                     />
                   ) : loan.item}</td>
                   <td className="px-4 py-3">{isEditing ? (
                     <Input
-                      className="w-full border border-zinc-600 dark:border-zinc-700 rounded-md bg-zinc-800 dark:bg-zinc-800/50 px-2 py-1 text-sm text-zinc-100 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                       value={editLoan.owner}
                       onChange={(e) => setEditLoan({ ...editLoan, owner: e.target.value })}
                     />
                   ) : loan.owner}</td>
                   <td className="px-4 py-3">{isEditing ? (
                     <Input
-                      className="w-full border border-zinc-600 dark:border-zinc-700 rounded-md bg-zinc-800 dark:bg-zinc-800/50 px-2 py-1 text-sm text-zinc-100 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                       value={editLoan.dateBrought}
                       onChange={(e) => setEditLoan({ ...editLoan, dateBrought: e.target.value })}
                     />
                   ) : loan.dateBrought}</td>
                   <td className="px-4 py-3">{isEditing ? (
                     <Input
-                      className="w-full border border-zinc-600 dark:border-zinc-700 rounded-md bg-zinc-800 dark:bg-zinc-800/50 px-2 py-1 text-sm text-zinc-100 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                       value={editLoan.dateReturned}
                       onChange={(e) => setEditLoan({ ...editLoan, dateReturned: e.target.value })}
                     />
@@ -259,7 +250,7 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700"
+                          className="text-muted-foreground hover:text-primary hover:bg-accent"
                           onClick={() => startEditLoan(loan)}
                         >
                           <Edit2 className="size-4" />
@@ -267,7 +258,7 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700"
+                          className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                           onClick={() => confirmDeleteLoan(loan.id)}
                         >
                           <Trash2 className="size-4" />

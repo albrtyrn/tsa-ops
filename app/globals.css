@@ -48,39 +48,39 @@
 
 :root {
   color-scheme: light;
-  --background: #f7f7f5;
-  --foreground: #111827;
-  --card: #ffffff;
-  --card-foreground: #111827;
+  --background: #f7f7fa; /* Notion-inspired soft cool canvas with a periwinkle tint */
+  --foreground: #22212c; /* Sleek dark slate/charcoal text instead of harsh black */
+  --card: #ffffff; /* Crisp white card layout on the canvas */
+  --card-foreground: #22212c;
   --popover: #ffffff;
-  --popover-foreground: #111827;
-  --primary: #111827;
+  --popover-foreground: #22212c;
+  --primary: #6366f1; /* Vibrant periwinkle-indigo primary branding identity */
   --primary-foreground: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-foreground: #4b5563;
-  --muted: #f3f4f6;
+  --secondary: #eef2ff; /* Light periwinkle secondary accent background */
+  --secondary-foreground: #4f46e5; /* Contrast indigo/periwinkle text */
+  --muted: #f1f2f6; /* Very soft muted lavender-gray */
   --muted-foreground: #6b7280;
-  --accent: #f8fafc;
-  --accent-foreground: #111827;
+  --accent: #f0f1fa; /* Soft periwinkle/lavender accent background on hover */
+  --accent-foreground: #6366f1;
   --destructive: #ef4444;
-  --border: #e5e7eb;
+  --border: #e4e4f0; /* Ultra-thin light periwinkle-gray borders for Notion-like clean grids */
   --input: #ffffff;
-  --ring: #cbd5e1;
-  --chart-1: #d1d5db;
-  --chart-2: #9ca3af;
-  --chart-3: #6b7280;
-  --chart-4: #4b5563;
-  --chart-5: #374151;
-  --radius: 0.75rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #111827;
-  --sidebar-primary: #f8fafc;
-  --sidebar-primary-foreground: #111827;
-  --sidebar-accent: #f3f4f6;
-  --sidebar-accent-foreground: #111827;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #cbd5e1;
-  --sidebar-width: 18rem; 
+  --ring: #a5b4fc; /* Ring glows in periwinkle tone */
+  --chart-1: #6366f1;
+  --chart-2: #818cf8;
+  --chart-3: #a5b4fc;
+  --chart-4: #c7d2fe;
+  --chart-5: #4f46e5;
+  --radius: 0.5rem; /* Standard clean 8px Notion rounded corners */
+  --sidebar: #f5f5f9; /* Notion-like gray sidebar with a touch of lavender */
+  --sidebar-foreground: #4a4954;
+  --sidebar-primary: #6366f1;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ebebef;
+  --sidebar-accent-foreground: #6366f1;
+  --sidebar-border: #e4e4f0;
+  --sidebar-ring: #a5b4fc;
+  --sidebar-width: 16rem; 
   --sidebar-width-icon: 3rem;
 }
 

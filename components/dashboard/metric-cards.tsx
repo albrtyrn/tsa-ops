@@ -28,18 +28,18 @@ export function MetricCards() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {cards.map((card) => (
-        <Card key={card.label}>
-          <CardHeader className="flex flex-row items-center justify-between gap-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card key={card.label} className="border border-border bg-card shadow-sm hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300">
+          <CardHeader className="flex flex-row items-center justify-between gap-2 pb-2">
+            <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
               {card.label}
             </CardTitle>
-            <span className="flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
+            <span className="flex size-8 items-center justify-center rounded-md bg-secondary text-secondary-foreground border border-primary/10">
               <card.icon className="size-4" />
             </span>
           </CardHeader>
           <CardContent className="flex flex-col gap-1">
-            <span className="text-3xl font-semibold tracking-tight">{card.value}</span>
-            <span className="text-xs text-muted-foreground">{card.hint}</span>
+            <span className="text-3xl font-bold tracking-tight text-foreground">{card.value}</span>
+            <span className="text-xs text-muted-foreground font-medium">{card.hint}</span>
           </CardContent>
         </Card>
       ))}

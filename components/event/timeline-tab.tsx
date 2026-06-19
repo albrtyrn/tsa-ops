@@ -81,9 +81,8 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
           <p className="text-sm font-medium">Keep the day-on-day schedule clear and easy to follow.</p>
         </div>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="border border-zinc-200 text-zinc-600 hover:bg-zinc-100"
           onClick={handleAddStep}
         >
           <Plus className="size-4" />
@@ -92,14 +91,14 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
       </div>
 
       {isAdding ? (
-        <Card>
+        <Card className="border border-border bg-card shadow-sm">
           <CardHeader className="items-start gap-4">
-            <CardTitle className="text-sm">New timeline item</CardTitle>
+            <CardTitle className="text-sm font-semibold">New timeline item</CardTitle>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" onClick={() => setIsAdding(false)}>
                 <X className="size-4" />
               </Button>
-              <Button variant="outline" size="sm" onClick={saveNewStep}>
+              <Button variant="default" size="sm" onClick={saveNewStep}>
                 Save
               </Button>
             </div>
@@ -107,22 +106,20 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
           <CardContent className="flex flex-col gap-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Marker
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newStep.marker}
                   onChange={(e) => setNewStep({ ...newStep, marker: e.target.value })}
                   placeholder="T-1 day"
                 />
               </div>
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Event
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newStep.title}
                   onChange={(e) => setNewStep({ ...newStep, title: e.target.value })}
                   placeholder="Setup begins"
@@ -130,11 +127,10 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
               </div>
             </div>
             <div>
-              <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+              <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                 Description
               </div>
               <Input
-                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                 value={newStep.description}
                 onChange={(e) => setNewStep({ ...newStep, description: e.target.value })}
                 placeholder="Who, what, and where"
@@ -149,29 +145,36 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
           const isEditing = editingId === step.id
           const isDeleting = deletingId === step.id
           return (
-            <Card key={step.id} className="group/card">
+            <Card key={step.id} className="group/card border border-border bg-card shadow-sm hover:border-primary/20 transition-all">
               <CardHeader className="items-start gap-4">
                 <div>
-                  <CardTitle className="text-sm">{step.title}</CardTitle>
-                  <p className="text-xs text-muted-foreground">{step.marker}</p>
+                  <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    {step.title}
+                    {step.done && (
+                      <span className="rounded-full bg-emerald-50 border border-emerald-100 text-emerald-600 px-2 py-0.5 text-xs font-semibold">
+                        Done
+                      </span>
+                    )}
+                  </CardTitle>
+                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">{step.marker}</p>
                 </div>
                 <CardAction className="opacity-0 transition-opacity group-hover/card:opacity-100">
                   <div className="flex gap-1">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="text-muted-foreground hover:bg-muted"
+                      className="text-muted-foreground hover:text-primary hover:bg-accent h-7 w-7"
                       onClick={() => startEditStep(step)}
                     >
-                      <Edit2 />
+                      <Edit2 className="size-3.5" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="text-muted-foreground hover:bg-muted"
+                      className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-7 w-7"
                       onClick={() => confirmDeleteStep(step.id)}
                     >
-                      <Trash2 />
+                      <Trash2 className="size-3.5" />
                     </Button>
                   </div>
                 </CardAction>
@@ -181,32 +184,29 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                   <div className="grid gap-3">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                           Marker
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           value={editStep.marker}
                           onChange={(e) => setEditStep({ ...editStep, marker: e.target.value })}
                         />
                       </div>
                       <div>
-                        <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                           Event
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           value={editStep.title}
                           onChange={(e) => setEditStep({ ...editStep, title: e.target.value })}
                         />
                       </div>
                     </div>
                     <div>
-                      <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                      <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                         Description
                       </div>
                       <Input
-                        className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                         value={editStep.description}
                         onChange={(e) => setEditStep({ ...editStep, description: e.target.value })}
                       />
@@ -214,14 +214,15 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                     <div className="flex items-center gap-2 text-sm">
                       <input
                         type="checkbox"
+                        id={`edit-step-done-${step.id}`}
                         checked={editStep.done}
                         onChange={(e) => setEditStep({ ...editStep, done: e.target.checked })}
-                        className="h-4 w-4 rounded border-input text-foreground focus-visible:ring-ring"
+                        className="h-4 w-4 rounded border-input text-primary focus-visible:ring-ring cursor-pointer accent-primary"
                       />
-                      <span className="text-sm text-foreground">Completed</span>
+                      <label htmlFor={`edit-step-done-${step.id}`} className="text-sm text-foreground font-medium cursor-pointer">Completed</label>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Button variant="secondary" size="sm" onClick={saveEditStep}>
+                      <Button variant="default" size="sm" onClick={saveEditStep}>
                         Save
                       </Button>
                       <Button variant="ghost" size="sm" onClick={cancelEdit}>
@@ -231,10 +232,10 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                   </div>
                 ) : (
                   <>
-                    <p className="text-sm text-muted-foreground">{step.description}</p>
+                    <p className="text-sm text-muted-foreground pt-1 border-t border-border/40">{step.description}</p>
                     {isDeleting ? (
-                      <div className="rounded-lg border border-border bg-muted/40 p-3 text-sm">
-                        <p className="text-sm">Delete this step?</p>
+                      <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm mt-3">
+                        <p className="text-sm font-medium text-destructive">Delete this step?</p>
                         <div className="mt-3 flex gap-2">
                           <Button variant="ghost" size="sm" onClick={() => setDeletingId(null)}>
                             Cancel

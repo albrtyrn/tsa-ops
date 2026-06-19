@@ -89,9 +89,8 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
           </p>
         </div>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="border border-zinc-200 text-zinc-600 hover:bg-zinc-100"
           onClick={handleAddDish}
         >
           <Plus className="size-4" />
@@ -100,14 +99,14 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
       </div>
 
       {isAdding ? (
-        <Card>
+        <Card className="border border-border bg-card shadow-sm">
           <CardHeader className="items-start gap-4">
             <CardTitle className="text-sm">New dish</CardTitle>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" onClick={() => setIsAdding(false)}>
                 <X className="size-4" />
               </Button>
-              <Button variant="outline" size="sm" onClick={saveNewDish}>
+              <Button variant="default" size="sm" onClick={saveNewDish}>
                 Save
               </Button>
             </div>
@@ -115,22 +114,20 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
           <CardContent className="flex flex-col gap-4 py-4">
             <div className="flex flex-col gap-4">
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Name
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newDish.name}
                   onChange={(e) => setNewDish({ ...newDish, name: e.target.value })}
                   placeholder="Dish name"
                 />
               </div>
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Category
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newDish.category}
                   onChange={(e) => setNewDish({ ...newDish, category: e.target.value })}
                   placeholder="Starter, Main, Dessert"
@@ -139,11 +136,10 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Servings
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   type="number"
                   value={newDish.servings}
                   min={1}
@@ -151,11 +147,10 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                 />
               </div>
               <div>
-                <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Estimated cost
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   type="number"
                   value={newDish.estimatedCost}
                   min={0}
@@ -172,28 +167,28 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
           const isEditing = editingId === dish.id
           const isDeleting = deletingId === dish.id
           return (
-            <Card key={dish.id} className="group/card">
+            <Card key={dish.id} className="group/card border border-border bg-card shadow-sm hover:border-primary/30 transition-all">
               <CardHeader className="items-start gap-4">
                 <div>
-                  <CardTitle className="text-sm">{dish.name}</CardTitle>
-                  <Badge variant="secondary">{dish.category}</Badge>
+                  <CardTitle className="text-sm font-semibold">{dish.name}</CardTitle>
+                  <Badge variant="secondary" className="mt-1 bg-secondary text-secondary-foreground">{dish.category}</Badge>
                 </div>
                 <CardAction className="flex gap-1 opacity-0 transition-opacity group-hover/card:opacity-100">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-muted-foreground hover:bg-muted"
+                    className="text-muted-foreground hover:text-primary hover:bg-accent"
                     onClick={() => startEditDish(dish)}
                   >
-                    <Edit2 />
+                    <Edit2 className="size-4" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-muted-foreground hover:bg-muted"
+                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                     onClick={() => confirmDeleteDish(dish.id)}
                   >
-                    <Trash2 />
+                    <Trash2 className="size-4" />
                   </Button>
                 </CardAction>
               </CardHeader>
@@ -202,21 +197,19 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                   <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-4">
                       <div>
-                        <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                           Name
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           value={editDish.name}
                           onChange={(e) => setEditDish({ ...editDish, name: e.target.value })}
                         />
                       </div>
                       <div>
-                        <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                           Category
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           value={editDish.category}
                           onChange={(e) => setEditDish({ ...editDish, category: e.target.value })}
                         />
@@ -224,22 +217,20 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                           Servings
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           type="number"
                           value={editDish.servings}
                           onChange={(e) => setEditDish({ ...editDish, servings: Number(e.target.value) })}
                         />
                       </div>
                       <div>
-                        <div className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                           Estimated cost
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           type="number"
                           value={editDish.estimatedCost}
                           onChange={(e) => setEditDish({ ...editDish, estimatedCost: Number(e.target.value) })}
@@ -247,7 +238,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      <Button variant="secondary" size="sm" onClick={saveEditDish}>
+                      <Button variant="default" size="sm" onClick={saveEditDish}>
                         Save
                       </Button>
                       <Button variant="ghost" size="sm" onClick={cancelEdit}>
@@ -257,13 +248,13 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                   </div>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-sm pt-1 border-t border-border">
                       <span className="text-muted-foreground">{dish.servings} servings</span>
-                      <span className="font-medium tabular-nums">${dish.estimatedCost.toLocaleString()}</span>
+                      <span className="font-medium text-foreground tabular-nums">${dish.estimatedCost.toLocaleString()}</span>
                     </div>
                     {isDeleting ? (
-                      <div className="rounded-lg border border-border bg-muted/40 p-3 text-sm">
-                        <p className="text-sm">Delete this dish?</p>
+                      <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm mt-3 animate-fade-in">
+                        <p className="text-sm font-medium text-destructive">Delete this dish?</p>
                         <div className="mt-3 flex gap-2">
                           <Button variant="ghost" size="sm" onClick={() => setDeletingId(null)}>
                             Cancel
