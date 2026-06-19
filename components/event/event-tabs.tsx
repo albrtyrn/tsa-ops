@@ -6,6 +6,8 @@ import { MenuTab } from "@/components/event/menu-tab"
 import { StaffingTab } from "@/components/event/staffing-tab"
 import { TimelineTab } from "@/components/event/timeline-tab"
 import { ShoppingTab } from "@/components/event/shopping-tab"
+import { EquipmentTab } from "@/components/event/equipment-tab"
+import { ReimbursementsTab } from "@/components/event/reimbursements-tab"
 import { ReflectionTab } from "@/components/event/reflection-tab"
 import type { CulinaryEvent } from "@/lib/data"
 
@@ -15,6 +17,8 @@ const tabs = [
   { value: "staffing", label: "Staffing" },
   { value: "timeline", label: "Timeline" },
   { value: "shopping", label: "Shopping" },
+  { value: "equipment", label: "Equipment" },
+  { value: "reimbursements", label: "Reimbursements" },
   { value: "reflection", label: "Reflection" },
 ]
 
@@ -45,6 +49,12 @@ export function EventTabs({ event }: { event: CulinaryEvent }) {
       </TabsContent>
       <TabsContent value="shopping">
         <ShoppingTab event={event} />
+      </TabsContent>
+      <TabsContent value="equipment">
+        <EquipmentTab event={event} />
+      </TabsContent>
+      <TabsContent value="reimbursements">
+        <ReimbursementsTab event={event} />
       </TabsContent>
       <TabsContent value="reflection">
         <ReflectionTab event={event} />

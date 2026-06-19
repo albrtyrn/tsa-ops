@@ -28,7 +28,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 const navItems = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Events", href: "/events", icon: CalendarDays },
-  { title: "Templates", href: "/templates", icon: LayoutTemplate },
   { title: "Volunteers", href: "/volunteers", icon: Users },
   { title: "Analytics", href: "/analytics", icon: BarChart3 },
   { title: "Settings", href: "/settings", icon: Settings },
