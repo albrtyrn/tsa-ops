@@ -111,7 +111,7 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                   Marker
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newStep.marker}
                   onChange={(e) => setNewStep({ ...newStep, marker: e.target.value })}
                   placeholder="T-1 day"
@@ -122,7 +122,7 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                   Event
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newStep.title}
                   onChange={(e) => setNewStep({ ...newStep, title: e.target.value })}
                   placeholder="Setup begins"
@@ -134,7 +134,7 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                 Description
               </div>
               <Input
-                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                 value={newStep.description}
                 onChange={(e) => setNewStep({ ...newStep, description: e.target.value })}
                 placeholder="Who, what, and where"
@@ -185,7 +185,7 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                           Marker
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           value={editStep.marker}
                           onChange={(e) => setEditStep({ ...editStep, marker: e.target.value })}
                         />
@@ -195,7 +195,7 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                           Event
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           value={editStep.title}
                           onChange={(e) => setEditStep({ ...editStep, title: e.target.value })}
                         />
@@ -206,7 +206,7 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                         Description
                       </div>
                       <Input
-                        className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                        className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                         value={editStep.description}
                         onChange={(e) => setEditStep({ ...editStep, description: e.target.value })}
                       />
@@ -218,7 +218,7 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
                         onChange={(e) => setEditStep({ ...editStep, done: e.target.checked })}
                         className="h-4 w-4 rounded border-input text-foreground focus-visible:ring-ring"
                       />
-                      <span className="text-sm text-zinc-900 dark:text-zinc-100">Completed</span>
+                      <span className="text-sm text-foreground">Completed</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Button variant="secondary" size="sm" onClick={saveEditStep}>
