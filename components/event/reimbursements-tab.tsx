@@ -120,7 +120,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
                   Buyer
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newEntry.buyer}
                   onChange={(e) => setNewEntry({ ...newEntry, buyer: e.target.value })}
                   placeholder="Purchase lead"
@@ -131,7 +131,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
                   Amount
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   type="number"
                   value={newEntry.amount}
                   min={0}
@@ -145,7 +145,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
                   Purpose
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newEntry.purpose}
                   onChange={(e) => setNewEntry({ ...newEntry, purpose: e.target.value })}
                   placeholder="Receipt for bags"
@@ -156,7 +156,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
                   Receipt status
                 </div>
                 <select
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newEntry.receiptStatus}
                   onChange={(e) => setNewEntry({ ...newEntry, receiptStatus: e.target.value as typeof receiptOptions[number] })}
                 >
@@ -173,7 +173,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
                 Status
               </div>
               <select
-                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                 value={newEntry.status}
                 onChange={(e) => setNewEntry({ ...newEntry, status: e.target.value as typeof reimbursementOptions[number] })}
               >

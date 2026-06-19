@@ -137,7 +137,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                     Item
                   </div>
                   <Input
-                    className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                    className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                     value={newItem.name}
                     onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
                     placeholder="Paper towels"
@@ -148,7 +148,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                     Quantity
                   </div>
                   <Input
-                    className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                    className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                     value={newItem.quantity}
                     onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
                     placeholder="2 packs"
@@ -162,7 +162,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                 >
                   {shoppingGroups.map((group) => (
                     <option key={group.category} value={group.category}>
@@ -203,7 +203,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                                   Item
                                 </div>
                                 <Input
-                                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                                   value={editItem.name}
                                   onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
                                 />
@@ -213,7 +213,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                                   Quantity
                                 </div>
                                 <Input
-                                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                                   value={editItem.quantity}
                                   onChange={(e) => setEditItem({ ...editItem, quantity: e.target.value })}
                                 />

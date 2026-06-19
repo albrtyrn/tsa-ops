@@ -119,7 +119,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                   Name
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newDish.name}
                   onChange={(e) => setNewDish({ ...newDish, name: e.target.value })}
                   placeholder="Dish name"
@@ -130,7 +130,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                   Category
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newDish.category}
                   onChange={(e) => setNewDish({ ...newDish, category: e.target.value })}
                   placeholder="Starter, Main, Dessert"
@@ -143,7 +143,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                   Servings
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   type="number"
                   value={newDish.servings}
                   min={1}
@@ -155,7 +155,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                   Estimated cost
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   type="number"
                   value={newDish.estimatedCost}
                   min={0}
@@ -206,7 +206,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                           Name
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           value={editDish.name}
                           onChange={(e) => setEditDish({ ...editDish, name: e.target.value })}
                         />
@@ -216,7 +216,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                           Category
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           value={editDish.category}
                           onChange={(e) => setEditDish({ ...editDish, category: e.target.value })}
                         />
@@ -228,7 +228,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                           Servings
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           type="number"
                           value={editDish.servings}
                           onChange={(e) => setEditDish({ ...editDish, servings: Number(e.target.value) })}
@@ -239,7 +239,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                           Estimated cost
                         </div>
                         <Input
-                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                          className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                           type="number"
                           value={editDish.estimatedCost}
                           onChange={(e) => setEditDish({ ...editDish, estimatedCost: Number(e.target.value) })}

@@ -169,7 +169,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
                   Name
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newMember.name}
                   onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
                   placeholder="Volunteer name"
@@ -180,7 +180,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
                   Role
                 </div>
                 <Input
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                   value={newMember.role}
                   onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
                   placeholder="Prep Volunteer, Server"
@@ -195,7 +195,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
                 <select
                   value={newMember.team}
                   onChange={(e) => setNewMember({ ...newMember, team: e.target.value })}
-                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                  className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                 >
                   {staffingGroups.map((group) => (
                     <option key={group.team} value={group.team}>
@@ -211,7 +211,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
                   onChange={(e) => setNewMember({ ...newMember, confirmed: e.target.checked })}
                   className="h-4 w-4 rounded border-input text-foreground focus-visible:ring-ring"
                 />
-                <span className="text-sm text-zinc-900 dark:text-zinc-100">Confirmed</span>
+                <span className="text-sm text-foreground">Confirmed</span>
               </div>
             </div>
           </CardContent>
@@ -246,7 +246,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
                                 Name
                               </div>
                               <Input
-                                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                                 value={editMember.name}
                                 onChange={(e) => setEditMember({ ...editMember, name: e.target.value })}
                               />
@@ -256,7 +256,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
                                 Role
                               </div>
                               <Input
-                                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
+                                className="w-full border border-zinc-300 dark:border-zinc-700 rounded-md bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-zinc-500/50 focus:border-zinc-500"
                                 value={editMember.role}
                                 onChange={(e) => setEditMember({ ...editMember, role: e.target.value })}
                               />
@@ -269,7 +269,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
                               onChange={(e) => setEditMember({ ...editMember, confirmed: e.target.checked })}
                               className="h-4 w-4 rounded border-input text-foreground focus-visible:ring-ring"
                             />
-                            <span className="text-sm text-zinc-900 dark:text-zinc-100">Confirmed</span>
+                            <span className="text-sm text-foreground">Confirmed</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Button variant="secondary" size="sm" onClick={saveEditMember}>

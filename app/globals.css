@@ -2,8 +2,6 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-geist-sans), 'Geist Fallback';
@@ -84,78 +82,6 @@
   --sidebar-ring: #cbd5e1;
   --sidebar-width: 18rem; 
   --sidebar-width-icon: 3rem;
-}
-
-.dark {
-  color-scheme: dark;
-  --background: #111827;
-  --foreground: #e2e8f0;
-  --card: #1f2937;
-  --card-foreground: #e2e8f0;
-  --popover: #111827;
-  --popover-foreground: #e2e8f0;
-  --primary: #f8fafc;
-  --primary-foreground: #111827;
-  --secondary: #111827;
-  --secondary-foreground: #cbd5e1;
-  --muted: #111827;
-  --muted-foreground: #94a3b8;
-  --accent: #1f2937;
-  --accent-foreground: #e2e8f0;
-  --destructive: #f87171;
-  --border: #334155;
-  --input: #1f2937;
-  --ring: #475569;
-  --chart-1: #475569;
-  --chart-2: #64748b;
-  --chart-3: #94a3b8;
-  --chart-4: #cbd5e1;
-  --chart-5: #e2e8f0;
-  --sidebar: #111827;
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-primary: #1f2937;
-  --sidebar-primary-foreground: #e2e8f0;
-  --sidebar-accent: #111827;
-  --sidebar-accent-foreground: #cbd5e1;
-  --sidebar-border: #334155;
-  --sidebar-ring: #475569;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    color-scheme: dark;
-    --background: #111827;
-    --foreground: #e2e8f0;
-    --card: #1f2937;
-    --card-foreground: #e2e8f0;
-    --popover: #111827;
-    --popover-foreground: #e2e8f0;
-    --primary: #f8fafc;
-    --primary-foreground: #111827;
-    --secondary: #111827;
-    --secondary-foreground: #cbd5e1;
-    --muted: #111827;
-    --muted-foreground: #94a3b8;
-    --accent: #1f2937;
-    --accent-foreground: #e2e8f0;
-    --destructive: #f87171;
-    --border: #334155;
-    --input: #1f2937;
-    --ring: #475569;
-    --chart-1: #475569;
-    --chart-2: #64748b;
-    --chart-3: #94a3b8;
-    --chart-4: #cbd5e1;
-    --chart-5: #e2e8f0;
-    --sidebar: #111827;
-    --sidebar-foreground: #e2e8f0;
-    --sidebar-primary: #1f2937;
-    --sidebar-primary-foreground: #e2e8f0;
-    --sidebar-accent: #111827;
-    --sidebar-accent-foreground: #cbd5e1;
-    --sidebar-border: #334155;
-    --sidebar-ring: #475569;
-  }
 }
 
 @layer base {
