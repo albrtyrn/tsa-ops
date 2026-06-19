@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'TSA Culinary Ops Copilot',
-  description: 'Execution command center for planning culinary events with AI assistance.',
-  generator: 'v0.app',
+  title: 'TSA Culinary Operations',
+  description: 'Lightweight student org planning hub for TSA food events, grocery runs, and volunteer coordination.',
+  generator: 'TSA Culinary Ops',
   icons: {
     icon: [
       {
@@ -51,7 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <TooltipProvider delayDuration={0}>
+        <TooltipProvider delay={0}>
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
