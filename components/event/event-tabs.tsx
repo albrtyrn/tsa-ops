@@ -1,5 +1,7 @@
 "use client"
 
+import { motion } from "framer-motion"
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { OverviewTab } from "@/components/event/overview-tab"
 import { MenuTab } from "@/components/event/menu-tab"
@@ -22,6 +24,12 @@ const tabs = [
   { value: "reflection", label: "Reflection" },
 ]
 
+const tabTransition = {
+  initial: { y: 15, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  transition: { duration: 0.3, ease: "easeOut" }
+}
+
 export function EventTabs({ event }: { event: CulinaryEvent }) {
   return (
     <Tabs defaultValue="overview" className="gap-6">
@@ -36,28 +44,44 @@ export function EventTabs({ event }: { event: CulinaryEvent }) {
       </div>
 
       <TabsContent value="overview">
-        <OverviewTab event={event} />
+        <motion.div {...tabTransition}>
+          <OverviewTab event={event} />
+        </motion.div>
       </TabsContent>
       <TabsContent value="menu">
-        <MenuTab event={event} />
+        <motion.div {...tabTransition}>
+          <MenuTab event={event} />
+        </motion.div>
       </TabsContent>
       <TabsContent value="staffing">
-        <StaffingTab event={event} />
+        <motion.div {...tabTransition}>
+          <StaffingTab event={event} />
+        </motion.div>
       </TabsContent>
       <TabsContent value="timeline">
-        <TimelineTab event={event} />
+        <motion.div {...tabTransition}>
+          <TimelineTab event={event} />
+        </motion.div>
       </TabsContent>
       <TabsContent value="shopping">
-        <ShoppingTab event={event} />
+        <motion.div {...tabTransition}>
+          <ShoppingTab event={event} />
+        </motion.div>
       </TabsContent>
       <TabsContent value="equipment">
-        <EquipmentTab event={event} />
+        <motion.div {...tabTransition}>
+          <EquipmentTab event={event} />
+        </motion.div>
       </TabsContent>
       <TabsContent value="reimbursements">
-        <ReimbursementsTab event={event} />
+        <motion.div {...tabTransition}>
+          <ReimbursementsTab event={event} />
+        </motion.div>
       </TabsContent>
       <TabsContent value="reflection">
-        <ReflectionTab event={event} />
+        <motion.div {...tabTransition}>
+          <ReflectionTab event={event} />
+        </motion.div>
       </TabsContent>
     </Tabs>
   )
