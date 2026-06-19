@@ -52,16 +52,22 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
         <TooltipProvider delay={0}>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4 md:hidden">
-                <SidebarTrigger />
-                <span className="text-sm font-semibold">TSA Culinary Ops Copilot</span>
-              </header>
-              {children}
-            </SidebarInset>
-          </SidebarProvider>
+          <div className="flex min-h-screen w-full bg-background justify-center">
+            <SidebarProvider className="w-full max-w-[1400px] flex">
+              <AppSidebar />
+              <SidebarInset>
+                <div className="flex flex-1 flex-col w-full">
+                  <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4 md:hidden">
+                    <SidebarTrigger />
+                    <span className="text-sm font-semibold">TSA Culinary Ops Copilot</span>
+                  </header>
+                  <main className="flex-1 w-full min-w-0 flex flex-col">
+                    {children}
+                  </main>
+                </div>
+              </SidebarInset>
+            </SidebarProvider>
+          </div>
         </TooltipProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

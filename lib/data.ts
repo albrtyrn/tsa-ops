@@ -83,6 +83,7 @@ export type CulinaryEvent = {
   spent: number
   status: EventStatus
   summary: string
+  isArchived: boolean
   readiness: { label: string; value: number }[]
   menu: Dish[]
   staffing: StaffGroup[]
@@ -114,6 +115,7 @@ export const events: CulinaryEvent[] = [
     budget: 1400,
     spent: 520,
     status: "Needs Attention",
+    isArchived: false,
     summary:
       "A student-run harvest dinner for 150 guests in the Union Ballroom. Menu and core teams are mostly in place, but the grocery list needs final approval and setup volunteers are still being confirmed.",
     readiness: [
@@ -270,6 +272,7 @@ export const events: CulinaryEvent[] = [
     budget: 650,
     spent: 120,
     status: "Planning",
+    isArchived: false,
     summary:
       "A relaxed networking lunch for 75 attendees. The student council grant is in review, and the team is currently building the grocery list, volunteer roster, and equipment plan.",
     readiness: [

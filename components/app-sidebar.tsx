@@ -39,7 +39,7 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-2">
+        <div className="flex items-center gap-2 px-8 py-2">
           <div className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <ChefHat className="size-4" />
           </div>
@@ -50,7 +50,7 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarGroup className="px-8 py-2">
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => {
@@ -63,9 +63,10 @@ export function AppSidebar() {
                     <SidebarMenuButton
                       isActive={isActive}
                       tooltip={item.title}
+                      className="px-4 py-5 text-base"
                       render={
-                        <Link href={item.href}>
-                          <item.icon />
+                        <Link href={item.href} className="flex items-center gap-3 w-full">
+                          <item.icon className="w-5 h-5" />
                           <span>{item.title}</span>
                         </Link>
                       }
@@ -78,7 +79,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center gap-2 px-2 py-2">
+        <div className="flex items-center gap-2 px-8 py-2">
           <Avatar className="size-8">
             <AvatarFallback>AC</AvatarFallback>
           </Avatar>
