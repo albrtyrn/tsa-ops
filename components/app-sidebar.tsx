@@ -50,7 +50,7 @@ export function AppSidebar() {
           </div>
           <div className="flex flex-col leading-none">
             <span className="text-base font-bold text-foreground tracking-tight">TSA Culinary</span>
-            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mt-0.5">Ops Copilot</span>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mt-0.5">Operations</span>
           </div>
         </div>
       </SidebarHeader>
@@ -86,11 +86,11 @@ export function AppSidebar() {
       <SidebarFooter>
         <div className="flex items-center gap-2 px-8 py-2">
           <Avatar className="size-8">
-            <AvatarFallback>AC</AvatarFallback>
+            <AvatarFallback>AP</AvatarFallback>
           </Avatar>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-medium">Alex Chen</span>
-            <span className="text-xs text-muted-foreground">Ops Manager</span>
+            <span className="text-sm font-medium">Albert Yorn</span>
+            <span className="text-xs text-muted-foreground">Culinary Chair</span>
           </div>
         </div>
       </SidebarFooter>
