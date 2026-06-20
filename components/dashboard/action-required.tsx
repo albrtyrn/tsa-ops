@@ -111,7 +111,7 @@ export function ActionRequired() {
                         className="text-primary hover:bg-accent hover:text-primary-foreground"
                         nativeButton={false}
                         render={
-                          <Link href={`/events/${item.eventId}?tab=${typeTab[item.type]}`}>
+                          <Link href={item.eventId ? `/events/${item.eventId}?tab=${typeTab[item.type]}` : "#"}>
                             Resolve
                             <ChevronRight data-icon="inline-end" />
                           </Link>
