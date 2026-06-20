@@ -41,13 +41,16 @@ export async function proxy(request: NextRequest) {
   
   const isOnboardingPage = request.nextUrl.pathname.startsWith("/onboarding")
 
+  // Cache the clean origin string for redirects
+  const origin = request.nextUrl.origin
+
   if (!user && !isAuthPage) {
-    // Redirect to login if trying to access a protected route
-    return NextResponse.redirect(new URL("/login", request.url))
+    // ✅ Safe absolute redirect using origin
+    return NextResponse.redirect(new URL("/login", origin))
   }
 
   if (user) {
-    // Safe onboarding state check: check if the user profile is marked as onboarded
+    // Safe onboarding state check
     let hasCompletedOnboarding = true
     try {
       const { data: profile, error } = await supabase
@@ -64,18 +67,18 @@ export async function proxy(request: NextRequest) {
     }
 
     if (!hasCompletedOnboarding && !isOnboardingPage && !isAuthPage) {
-      // Redirect un-onboarded user to onboarding page
-      return NextResponse.redirect(new URL("/onboarding", request.url))
+      // ✅ Safe absolute redirect using origin
+      return NextResponse.redirect(new URL("/onboarding", origin))
     }
 
     if (hasCompletedOnboarding && isOnboardingPage) {
-      // Already onboarded, redirect away from onboarding
-      return NextResponse.redirect(new URL("/", request.url))
+      // ✅ Safe absolute redirect using origin
+      return NextResponse.redirect(new URL("/", origin))
     }
 
     if (isAuthPage) {
-      // Redirect logged-in users away from login/signup pages
-      return NextResponse.redirect(new URL("/", request.url))
+      // ✅ Safe absolute redirect using origin
+      return NextResponse.redirect(new URL("/", origin))
     }
   }
 
@@ -84,13 +87,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - any images or logos
-     */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 }
