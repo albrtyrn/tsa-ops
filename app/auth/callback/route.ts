@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server" 
 import { createClient } from "@/lib/supabase-server"
 
-export async function GET(request: Request) {
-  const requestUrl = new URL(request.url)
+export async function GET(request: NextRequest) {
+  const requestUrl = request.nextUrl 
   const code = requestUrl.searchParams.get("code")
 
   if (code) {
@@ -19,8 +19,8 @@ export async function GET(request: Request) {
           .maybeSingle()
 
         if (!profile || !profile.onboarded) {
-          // If not onboarded, redirect to onboarding
-          return NextResponse.redirect(new URL("/onboarding", request.url))
+          // ✅ Use requestUrl.origin to safely force a solid absolute URL
+          return NextResponse.redirect(new URL("/onboarding", requestUrl.origin))
         }
       } catch (e) {
         console.warn("Callback onboarding check failed:", e)
@@ -28,6 +28,6 @@ export async function GET(request: Request) {
     }
   }
 
-  // URL to redirect to after successful sign in process
-  return NextResponse.redirect(new URL("/", request.url))
+  // ✅ Use requestUrl.origin to safely force a solid absolute URL
+  return NextResponse.redirect(new URL("/", requestUrl.origin))
 }
