@@ -64,13 +64,30 @@ export function AppSidebar() {
               role: "Officer",
             })
           }
+        } else {
+          // Fallback if no user session is active (e.g. local dev mock state)
+          setProfile({
+            name: "Albert Yorn",
+            role: "Culinary Chair",
+          })
         }
       } catch (err) {
-        console.warn("Could not fetch user profile details:", err)
+        console.warn("Could not fetch user profile details, using mock fallback:", err)
+        setProfile({
+          name: "Albert Yorn",
+          role: "Culinary Chair",
+        })
       }
     }
     loadProfile()
-  }, [])
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("profile-updated", loadProfile)
+      return () => {
+        window.removeEventListener("profile-updated", loadProfile)
+      }
+    }
+  }, [pathname])
 
   return (
     <Sidebar>
@@ -123,15 +140,25 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <div className="flex items-center justify-between gap-2 px-8 py-4 border-t border-border/40">
-          <div className="flex items-center gap-2 overflow-hidden">
-            <Avatar className="size-8">
-              <AvatarFallback>{getInitials(profile?.name || "Albert Yorn")}</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col leading-tight overflow-hidden">
-              <span className="text-sm font-semibold truncate max-w-[110px]">{profile?.name || "Albert Yorn"}</span>
-              <span className="text-[10px] text-muted-foreground truncate max-w-[110px]">{profile?.role || "Culinary Chair"}</span>
+          {profile ? (
+            <div className="flex items-center gap-2 overflow-hidden">
+              <Avatar className="size-8">
+                <AvatarFallback>{getInitials(profile.name)}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col leading-tight overflow-hidden">
+                <span className="text-sm font-semibold truncate max-w-[110px]">{profile.name}</span>
+                <span className="text-[10px] text-muted-foreground truncate max-w-[110px]">{profile.role}</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center gap-2 overflow-hidden animate-pulse">
+              <div className="size-8 rounded-full bg-muted shrink-0" />
+              <div className="flex flex-col gap-1.5 overflow-hidden">
+                <div className="h-3 w-20 bg-muted rounded" />
+                <div className="h-2.5 w-14 bg-muted rounded" />
+              </div>
+            </div>
+          )}
           <button
             onClick={() => logoutAction()}
             className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer shrink-0"

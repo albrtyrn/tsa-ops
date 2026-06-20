@@ -53,6 +53,9 @@ export function SettingsForm({ initialProfile }: SettingsFormProps) {
           vehicleType,
         })
         setSuccess("Profile settings updated successfully!")
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new Event("profile-updated"))
+        }
       } catch (err: any) {
         setError(err.message || "Something went wrong while updating settings.")
       }
