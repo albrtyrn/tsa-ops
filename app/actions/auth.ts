@@ -101,6 +101,14 @@ export async function onboardUserAction(data: {
     throw new Error(`Profile setup failed: ${profileError.message}`)
   }
 
+  // Sync details to Auth metadata
+  await supabase.auth.updateUser({
+    data: {
+      name: data.name,
+      role: data.role,
+    },
+  })
+
   revalidatePath("/")
   redirect("/")
 }
@@ -134,6 +142,14 @@ export async function updateProfileAction(data: {
   if (profileError) {
     throw new Error(`Failed to update profile: ${profileError.message}`)
   }
+
+  // Sync details to Auth metadata
+  await supabase.auth.updateUser({
+    data: {
+      name: data.name,
+      role: data.role,
+    },
+  })
 
   revalidatePath("/")
   revalidatePath("/settings")

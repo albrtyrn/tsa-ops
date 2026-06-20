@@ -61,7 +61,7 @@ export function AppSidebar() {
           } else {
             setProfile({
               name: user.user_metadata?.name || user.email || "Culinary Officer",
-              role: "Officer",
+              role: user.user_metadata?.role || "Officer",
             })
           }
         } else {
@@ -72,7 +72,18 @@ export function AppSidebar() {
           })
         }
       } catch (err) {
-        console.warn("Could not fetch user profile details, using mock fallback:", err)
+        console.warn("Could not fetch user profile details, checking auth session fallback:", err)
+        try {
+          const { data: { user } } = await supabase.auth.getUser()
+          if (user) {
+            setProfile({
+              name: user.user_metadata?.name || user.email || "Culinary Officer",
+              role: user.user_metadata?.role || "Officer",
+            })
+            return
+          }
+        } catch {}
+
         setProfile({
           name: "Albert Yorn",
           role: "Culinary Chair",
