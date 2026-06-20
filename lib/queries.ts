@@ -194,8 +194,8 @@ export async function fetchAllEvents() {
     .order("date", { ascending: true })
 
   if (error) {
-    console.error("Error fetching all events:", error)
-    return []
+  console.error("Error fetching all events RAW:", String(error), JSON.stringify(error, Object.getOwnPropertyNames(error)));
+  return []
   }
 
   return dbEvents.map((event: any) => {
