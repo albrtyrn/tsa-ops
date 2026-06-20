@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useTransition } from "react"
-import { Sparkles, Loader2, Home, UserPlus, Shield } from "lucide-react"
+import { Sparkles, Loader2, Shield } from "lucide-react"
 import { isRedirectError } from "next/dist/client/components/redirect-error"
 
 import { Button } from "@/components/ui/button"
@@ -21,11 +21,6 @@ export default function OnboardingPage() {
   const [venmoHandle, setVenmoHandle] = useState("")
   const [vehicleType, setVehicleType] = useState<"Sedan" | "SUV" | "Minivan" | "Pickup" | "None">("None")
   
-  // Workspace inputs
-  const [workspaceMode, setWorkspaceMode] = useState<"join" | "create">("join")
-  const [workspaceName, setWorkspaceName] = useState("")
-  const [workspaceSlug, setWorkspaceSlug] = useState("")
-
   // Fetch initial name from auth metadata
   useEffect(() => {
     async function loadUser() {
@@ -46,22 +41,6 @@ export default function OnboardingPage() {
       return
     }
 
-    if (workspaceMode === "create") {
-      if (!workspaceName.trim() || !workspaceSlug.trim()) {
-        setError("Workspace name and slug are required to create a new organization.")
-        return
-      }
-      if (!/^[a-z0-9-]+$/.test(workspaceSlug.trim().toLowerCase())) {
-        setError("Workspace slug must contain only lowercase letters, numbers, and hyphens.")
-        return
-      }
-    } else {
-      if (!workspaceSlug.trim()) {
-        setError("Please enter a workspace code or slug to join.")
-        return
-      }
-    }
-
     startTransition(async () => {
       try {
         await onboardUserAction({
@@ -69,9 +48,6 @@ export default function OnboardingPage() {
           role,
           venmoHandle,
           vehicleType,
-          workspaceMode,
-          workspaceName: workspaceMode === "create" ? workspaceName : undefined,
-          workspaceSlug: workspaceSlug,
         })
       } catch (err: any) {
         if (isRedirectError(err)) {
@@ -91,7 +67,7 @@ export default function OnboardingPage() {
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight">Onboarding Setup</CardTitle>
           <CardDescription>
-            Configure your personal profile and workspace membership
+            Configure your personal profile details to get started
           </CardDescription>
         </CardHeader>
         <CardContent className="px-8 pb-8">
@@ -160,98 +136,6 @@ export default function OnboardingPage() {
                   </select>
                 </div>
               </div>
-            </div>
-
-            {/* Workspace Selection Section */}
-            <div className="space-y-4 pt-2">
-              <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 pb-1 border-b border-border/40">
-                <Home className="size-4 text-primary" />
-                Workspace Settings
-              </h3>
-              
-              <div className="flex gap-2 p-1 bg-muted/50 rounded-xl border border-border/40">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setWorkspaceMode("join")
-                    setError(null)
-                  }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
-                    workspaceMode === "join"
-                      ? "bg-card text-foreground shadow-sm border border-border/40"
-                      : "text-muted-foreground hover:bg-card/20"
-                  }`}
-                >
-                  <UserPlus className="size-3.5" />
-                  Join Workspace
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setWorkspaceMode("create")
-                    setError(null)
-                  }}
-                  className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
-                    workspaceMode === "create"
-                      ? "bg-card text-foreground shadow-sm border border-border/40"
-                      : "text-muted-foreground hover:bg-card/20"
-                  }`}
-                >
-                  <Home className="size-3.5" />
-                  Create Workspace
-                </button>
-              </div>
-
-              {workspaceMode === "join" ? (
-                <div className="space-y-1.5 animate-fade-in">
-                  <Label htmlFor="slug-code">Workspace Code / Slug</Label>
-                  <Input
-                    id="slug-code"
-                    value={workspaceSlug}
-                    onChange={(e) => setWorkspaceSlug(e.target.value)}
-                    placeholder="tsa-uva"
-                    required
-                  />
-                  <p className="text-[10px] text-muted-foreground">
-                    Enter the slug of the existing workspace you wish to join (e.g. "tsa-uva")
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3 animate-fade-in">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="ws-name">Workspace Name</Label>
-                    <Input
-                      id="ws-name"
-                      value={workspaceName}
-                      onChange={(e) => {
-                        setWorkspaceName(e.target.value)
-                        // Auto-generate slug from name
-                        setWorkspaceSlug(
-                          e.target.value
-                            .toLowerCase()
-                            .replace(/[^a-z0-9]+/g, "-")
-                            .replace(/(^-|-$)/g, "")
-                        )
-                      }}
-                      placeholder="University of Virginia TSA"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="ws-slug">Workspace URL Code / Slug</Label>
-                    <Input
-                      id="ws-slug"
-                      value={workspaceSlug}
-                      onChange={(e) => setWorkspaceSlug(e.target.value)}
-                      placeholder="uva-tsa"
-                      required
-                    />
-                    <p className="text-[10px] text-muted-foreground">
-                      Lower case letters, numbers, and hyphens only. Used as join code.
-                    </p>
-                  </div>
-                </div>
-              )}
             </div>
 
             <Button

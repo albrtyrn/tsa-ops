@@ -12,15 +12,14 @@ export async function GET(request: Request) {
     if (!error && user) {
       // Check onboarding state
       try {
-        const { data: member } = await supabase
-          .from("workspace_members")
-          .select("workspace_id")
-          .eq("profile_id", user.id)
-          .limit(1)
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("onboarded")
+          .eq("id", user.id)
           .maybeSingle()
 
-        if (!member) {
-          // If no workspace joined, redirect to onboarding
+        if (!profile || !profile.onboarded) {
+          // If not onboarded, redirect to onboarding
           return NextResponse.redirect(new URL("/onboarding", request.url))
         }
       } catch (e) {

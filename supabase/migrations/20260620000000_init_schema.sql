@@ -26,36 +26,14 @@ create table public.profiles (
     role user_role not null default 'Volunteer',
     venmo_handle text,
     vehicle_type vehicle_type not null default 'None',
+    onboarded boolean not null default false,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
-
--- Workspaces Table
-create table public.workspaces (
-    id uuid default gen_random_uuid() primary key,
-    name text not null,
-    slug text not null unique,
-    ai_preferences jsonb not null default '{
-        "model": "gemini-2.5-flash",
-        "auto_resolve_actions": false,
-        "default_portion_buffer_percent": 10
-    }'::jsonb,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
-
--- Workspace Members: Junction table mapping profiles to workspaces
-create table public.workspace_members (
-    workspace_id uuid references public.workspaces(id) on delete cascade,
-    profile_id uuid references public.profiles(id) on delete cascade,
-    role member_role not null default 'Member',
-    joined_at timestamp with time zone default timezone('utc'::text, now()) not null,
-    primary key (workspace_id, profile_id)
 );
 
 -- Events Table
 create table public.events (
     id uuid default gen_random_uuid() primary key,
-    workspace_id uuid not null references public.workspaces(id) on delete cascade,
     name text not null,
     date date not null,
     location text not null,
@@ -255,7 +233,6 @@ from public.view_events_with_spending;
 -- 4. PERFORMANCE OPTIMIZATION INDEXES
 -- =========================================================================
 
-create index idx_events_workspace_id on public.events(workspace_id);
 create index idx_dishes_event_id on public.dishes(event_id);
 create index idx_staff_event_id on public.staff_members(event_id);
 create index idx_shopping_event_id on public.shopping_items(event_id);
@@ -270,8 +247,6 @@ create index idx_equipment_loans_event_id on public.equipment_loans(event_id);
 -- =========================================================================
 
 alter table public.profiles enable row level security;
-alter table public.workspaces enable row level security;
-alter table public.workspace_members enable row level security;
 alter table public.events enable row level security;
 alter table public.reimbursements enable row level security;
 
@@ -282,47 +257,22 @@ create policy "Allow public read access to profiles"
 create policy "Allow users to update their own profile" 
     on public.profiles for update using (auth.uid() = id);
 
--- Workspace Access
-create policy "Users can view workspaces they belong to"
-    on public.workspaces for select using (
-        exists (
-            select 1 from public.workspace_members
-            where workspace_members.workspace_id = id 
-              and workspace_members.profile_id = auth.uid()
-        )
-    );
-
 -- Events Access
-create policy "Users can select events in their workspaces"
-    on public.events for select using (
-        exists (
-            select 1 from public.workspace_members
-            where workspace_members.workspace_id = events.workspace_id 
-              and workspace_members.profile_id = auth.uid()
-        )
-    );
+create policy "Users can select events"
+    on public.events for select using (auth.role() = 'authenticated');
 
-create policy "Officers can insert/update events in their workspaces"
+create policy "Officers can manage events"
     on public.events for all using (
         exists (
-            select 1 from public.workspace_members wm
-            join public.profiles p on wm.profile_id = p.id
-            where wm.workspace_id = events.workspace_id 
-              and wm.profile_id = auth.uid()
-              and p.role in ('Officer', 'Treasurer')
+            select 1 from public.profiles
+            where profiles.id = auth.uid()
+              and profiles.role in ('Officer', 'Treasurer')
         )
     );
 
 -- Reimbursements Access
-create policy "Members can view reimbursements for their events"
-    on public.reimbursements for select using (
-        exists (
-            select 1 from public.events e
-            join public.workspace_members wm on e.workspace_id = wm.workspace_id
-            where e.id = reimbursements.event_id 
-              and wm.profile_id = auth.uid()
-        )
-    );
+create policy "Authenticated users can view reimbursements"
+    on public.reimbursements for select using (auth.role() = 'authenticated');
 
 create policy "Members can submit/edit their own reimbursement requests"
     on public.reimbursements for insert/update using (
@@ -333,7 +283,7 @@ create policy "Treasurers can manage all reimbursements"
     on public.reimbursements for all using (
         exists (
             select 1 from public.profiles
-            where profiles.id = auth.uid() 
+            where profiles.id = auth.uid()
               and profiles.role = 'Treasurer'
         )
     );

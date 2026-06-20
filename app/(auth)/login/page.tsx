@@ -3,8 +3,6 @@
 import { useActionState, startTransition } from "react"
 import Link from "next/link"
 import { Sparkles, Loader2, ArrowRight } from "lucide-react"
-import { isRedirectError } from "next/dist/client/components/redirect-error"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -18,12 +16,13 @@ export default function LoginPage() {
       formData: FormData
     ) => {
       try {
-        await loginAction(formData)
-        return { success: true, message: "Sign in successful! Redirecting..." }
-      } catch (err: any) {
-        if (isRedirectError(err)) {
-          throw err
+        const res = await loginAction(formData)
+        if (res?.success) {
+          window.location.href = "/"
+          return { success: true, message: "Sign in successful! Redirecting..." }
         }
+        return null
+      } catch (err: any) {
         return { success: false, error: err.message || "An unexpected error occurred." }
       }
     },

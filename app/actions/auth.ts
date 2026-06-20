@@ -23,7 +23,7 @@ export async function loginAction(formData: FormData) {
   }
 
   revalidatePath("/")
-  redirect("/")
+  return { success: true }
 }
 
 export async function signupAction(formData: FormData) {
@@ -53,7 +53,7 @@ export async function signupAction(formData: FormData) {
   // If a session is returned, the user is auto-confirmed/logged in
   if (data.session) {
     revalidatePath("/")
-    redirect("/onboarding")
+    return { success: true, redirectUrl: "/onboarding" }
   }
 
   // Otherwise, email confirmation is required
@@ -75,9 +75,6 @@ export async function onboardUserAction(data: {
   role: "Volunteer" | "Officer" | "Treasurer"
   venmoHandle: string
   vehicleType: "Sedan" | "SUV" | "Minivan" | "Pickup" | "None"
-  workspaceMode: "create" | "join"
-  workspaceName?: string
-  workspaceSlug?: string
 }) {
   const supabase = await createClient()
   
@@ -95,6 +92,7 @@ export async function onboardUserAction(data: {
       role: data.role,
       venmo_handle: data.venmoHandle || null,
       vehicle_type: data.vehicleType,
+      onboarded: true,
       updated_at: new Date().toISOString(),
     })
     .eq("id", user.id)
@@ -103,75 +101,41 @@ export async function onboardUserAction(data: {
     throw new Error(`Profile setup failed: ${profileError.message}`)
   }
 
-  // 2. Workspace creation or membership mapping
-  if (data.workspaceMode === "create") {
-    if (!data.workspaceName || !data.workspaceSlug) {
-      throw new Error("Workspace name and slug are required to create a new organization.")
-    }
+  revalidatePath("/")
+  redirect("/")
+}
 
-    // Insert workspace row
-    const { data: newWorkspace, error: wsError } = await supabase
-      .from("workspaces")
-      .insert([
-        {
-          name: data.workspaceName,
-          slug: data.workspaceSlug.toLowerCase().trim(),
-        },
-      ])
-      .select()
-      .single()
+export async function updateProfileAction(data: {
+  name: string
+  role: "Volunteer" | "Officer" | "Treasurer"
+  venmoHandle: string
+  vehicleType: "Sedan" | "SUV" | "Minivan" | "Pickup" | "None"
+}) {
+  const supabase = await createClient()
+  
+  // Retrieve the logged-in user
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
+  if (userError || !user) {
+    throw new Error("User session not found.")
+  }
 
-    if (wsError) {
-      throw new Error(`Workspace creation failed: ${wsError.message}`)
-    }
+  // Update profile details
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .update({
+      name: data.name,
+      role: data.role,
+      venmo_handle: data.venmoHandle || null,
+      vehicle_type: data.vehicleType,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", user.id)
 
-    // Add user as Admin member of the workspace
-    const { error: memberError } = await supabase
-      .from("workspace_members")
-      .insert([
-        {
-          workspace_id: newWorkspace.id,
-          profile_id: user.id,
-          role: "Admin",
-        },
-      ])
-
-    if (memberError) {
-      throw new Error(`Workspace mapping failed: ${memberError.message}`)
-    }
-  } else {
-    // Join mode
-    if (!data.workspaceSlug) {
-      throw new Error("Workspace slug/code is required to join an existing organization.")
-    }
-
-    // Locate the workspace
-    const { data: existingWS, error: findError } = await supabase
-      .from("workspaces")
-      .select("id")
-      .eq("slug", data.workspaceSlug.toLowerCase().trim())
-      .maybeSingle()
-
-    if (findError || !existingWS) {
-      throw new Error("Workspace not found. Check the code/slug and try again.")
-    }
-
-    // Add user as Member
-    const { error: memberError } = await supabase
-      .from("workspace_members")
-      .insert([
-        {
-          workspace_id: existingWS.id,
-          profile_id: user.id,
-          role: "Member",
-        },
-      ])
-
-    if (memberError) {
-      throw new Error(`Failed to join workspace: ${memberError.message}`)
-    }
+  if (profileError) {
+    throw new Error(`Failed to update profile: ${profileError.message}`)
   }
 
   revalidatePath("/")
-  redirect("/")
+  revalidatePath("/settings")
+  return { success: true }
 }

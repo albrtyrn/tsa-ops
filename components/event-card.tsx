@@ -58,7 +58,7 @@ export function EventCard({ event }: { event: CulinaryEvent }) {
                 </span>
               </div>
               <span className="flex items-center gap-1 text-xs font-semibold text-primary opacity-0 transition-all duration-300 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0">
-                Open Workspace <ArrowUpRight className="size-3.5" />
+                Open Event <ArrowUpRight className="size-3.5" />
               </span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">

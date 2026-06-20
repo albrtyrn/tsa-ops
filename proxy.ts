@@ -47,17 +47,16 @@ export async function proxy(request: NextRequest) {
   }
 
   if (user) {
-    // Safe onboarding state check: check if the user belongs to any workspace
+    // Safe onboarding state check: check if the user profile is marked as onboarded
     let hasCompletedOnboarding = true
     try {
-      const { data: member, error } = await supabase
-        .from("workspace_members")
-        .select("workspace_id")
-        .eq("profile_id", user.id)
-        .limit(1)
+      const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("onboarded")
+        .eq("id", user.id)
         .maybeSingle()
 
-      if (!error && !member) {
+      if (!error && profile && !profile.onboarded) {
         hasCompletedOnboarding = false
       }
     } catch (e) {

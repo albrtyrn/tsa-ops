@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase-server"
 
 export async function createEvent(formData: {
-  workspace_id: string
   name: string
   date: string
   location: string
@@ -17,7 +16,6 @@ export async function createEvent(formData: {
     .from("events")
     .insert([
       {
-        workspace_id: formData.workspace_id,
         name: formData.name,
         date: formData.date,
         location: formData.location,

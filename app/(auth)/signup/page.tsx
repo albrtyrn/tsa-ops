@@ -3,8 +3,6 @@
 import { useActionState, startTransition } from "react"
 import Link from "next/link"
 import { Sparkles, Loader2, ArrowRight } from "lucide-react"
-import { isRedirectError } from "next/dist/client/components/redirect-error"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -22,11 +20,12 @@ export default function SignupPage() {
         if (res?.needsConfirmation) {
           return { success: true, message: res.message }
         }
-        return { success: true, message: "Account created successfully! Redirecting..." }
-      } catch (err: any) {
-        if (isRedirectError(err)) {
-          throw err
+        if (res?.redirectUrl) {
+          window.location.href = res.redirectUrl
+          return { success: true, message: "Account created successfully! Redirecting..." }
         }
+        return null
+      } catch (err: any) {
         return { success: false, error: err.message || "An unexpected error occurred." }
       }
     },
