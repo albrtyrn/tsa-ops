@@ -1,13 +1,14 @@
 "use client"
 
 import { Plus } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 
 import { PageHeader } from "@/components/page-header"
 import { EventCard } from "@/components/event-card"
 import { Button } from "@/components/ui/button"
 import { events as initialEvents } from "@/lib/data"
+import { supabase } from "@/lib/supabase"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,6 +35,62 @@ const itemVariants = {
 
 export default function EventsPage() {
   const [events, setEvents] = useState(initialEvents)
+
+  useEffect(() => {
+    async function loadEvents() {
+      try {
+        const { data, error } = await supabase
+          .from("events")
+          .select(`
+            *,
+            reimbursements(*)
+          `)
+          .order("date", { ascending: true })
+
+        if (error) {
+          console.warn("Could not load events from database, using mock data:", error.message)
+          return
+        }
+
+        if (data && data.length > 0) {
+          const mapped = data.map((event: any) => {
+            const spent = (event.reimbursements || [])
+              .filter((r: any) => r.status === "Approved by Treasurer" || r.status === "Venmo Sent")
+              .reduce((sum: number, r: any) => sum + Number(r.amount), 0)
+
+            let displayDate = ""
+            try {
+              const d = new Date(event.date)
+              displayDate = d.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+            } catch {
+              displayDate = event.date
+            }
+
+            return {
+              id: event.id,
+              name: event.name,
+              date: displayDate,
+              location: event.location,
+              attendees: event.attendees,
+              budget: Number(event.budget),
+              spent: spent,
+              status: event.status,
+              summary: event.summary || "",
+              isArchived: event.is_archived,
+            }
+          })
+          setEvents(mapped)
+        }
+      } catch (err) {
+        console.warn("Database connection issue. Mock data displayed:", err)
+      }
+    }
+    loadEvents()
+  }, [])
 
   const activeEvents = events.filter((event) => !event.isArchived)
   const archivedEvents = events.filter((event) => event.isArchived)

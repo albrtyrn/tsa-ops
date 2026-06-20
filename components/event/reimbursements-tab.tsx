@@ -8,6 +8,7 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { CulinaryEvent, ReimbursementEntry } from "@/lib/data"
+import { addReimbursement, updateReimbursement, deleteReimbursement } from "@/app/actions/reimbursements"
 
 const reimbursementOptions = [
   "Pending Review",
@@ -45,12 +46,25 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
     setNewEntry({ ...defaultEntry })
   }
 
-  const saveNewEntry = () => {
+  const saveNewEntry = async () => {
     if (!newEntry.buyer.trim() || !newEntry.purpose.trim()) return
-    setEntries((prev) => [...prev, { id: `reim-${Date.now()}`, ...newEntry }])
+    
+    // Optimistic UI update
+    const tempId = `reim-${Date.now()}`
+    setEntries((prev) => [...prev, { id: tempId, ...newEntry }])
     setNewEntry({ ...defaultEntry })
     setIsAdding(false)
-    // TODO: persist new reimbursement via backend mutation
+
+    try {
+      await addReimbursement(event.id, {
+        buyer_name_fallback: newEntry.buyer,
+        purpose: newEntry.purpose,
+        amount: newEntry.amount,
+        receipt_status: newEntry.receiptStatus,
+      })
+    } catch (err) {
+      console.error("Failed to persist new reimbursement in Supabase:", err)
+    }
   }
 
   const startEditEntry = (entry: ReimbursementEntry) => {
@@ -59,11 +73,24 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
     setDeletingId(null)
   }
 
-  const saveEditEntry = () => {
+  const saveEditEntry = async () => {
     if (!editingId || !editEntry.buyer.trim() || !editEntry.purpose.trim()) return
+    
+    // Optimistic UI update
     setEntries((prev) => prev.map((entry) => (entry.id === editingId ? editEntry : entry)))
     setEditingId(null)
-    // TODO: persist reimbursement changes via backend mutation
+
+    try {
+      await updateReimbursement(event.id, editingId, {
+        buyer_name_fallback: editEntry.buyer,
+        purpose: editEntry.purpose,
+        amount: editEntry.amount,
+        receipt_status: editEntry.receiptStatus,
+        status: editEntry.status,
+      })
+    } catch (err) {
+      console.error("Failed to update reimbursement in Supabase:", err)
+    }
   }
 
   const cancelEdit = () => {
@@ -76,10 +103,16 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
     setEditingId(null)
   }
 
-  const deleteEntry = (id: string) => {
+  const deleteEntry = async (id: string) => {
+    // Optimistic UI update
     setEntries((prev) => prev.filter((entry) => entry.id !== id))
     setDeletingId(null)
-    // TODO: persist reimbursement deletion via backend mutation
+
+    try {
+      await deleteReimbursement(event.id, id)
+    } catch (err) {
+      console.error("Failed to delete reimbursement in Supabase:", err)
+    }
   }
 
   return (

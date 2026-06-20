@@ -8,6 +8,7 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { CulinaryEvent, TimelineStep } from "@/lib/data"
+import { addTimelineStep, updateTimelineStep, deleteTimelineStep } from "@/app/actions/timeline"
 
 const defaultStep: Omit<TimelineStep, "id"> = {
   marker: "",
@@ -36,12 +37,24 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
     setNewStep({ ...defaultStep })
   }
 
-  const saveNewStep = () => {
+  const saveNewStep = async () => {
     if (!newStep.title.trim() || !newStep.marker.trim()) return
-    setSteps((prev) => [...prev, { id: `step-${Date.now()}`, ...newStep }])
+    
+    // Optimistic UI update
+    const tempId = `step-${Date.now()}`
+    setSteps((prev) => [...prev, { id: tempId, ...newStep }])
     setNewStep({ ...defaultStep })
     setIsAdding(false)
-    // TODO: persist new timeline step via backend mutation
+
+    try {
+      await addTimelineStep(event.id, {
+        marker: newStep.marker,
+        title: newStep.title,
+        description: newStep.description,
+      })
+    } catch (err) {
+      console.error("Failed to persist new timeline step in Supabase:", err)
+    }
   }
 
   const startEditStep = (step: TimelineStep) => {
@@ -50,11 +63,23 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
     setDeletingId(null)
   }
 
-  const saveEditStep = () => {
+  const saveEditStep = async () => {
     if (!editingId || !editStep.title.trim() || !editStep.marker.trim()) return
+    
+    // Optimistic UI update
     setSteps((prev) => prev.map((step) => (step.id === editingId ? editStep : step)))
     setEditingId(null)
-    // TODO: persist timeline updates via backend mutation
+
+    try {
+      await updateTimelineStep(event.id, editingId, {
+        marker: editStep.marker,
+        title: editStep.title,
+        description: editStep.description,
+        done: editStep.done,
+      })
+    } catch (err) {
+      console.error("Failed to update timeline step in Supabase:", err)
+    }
   }
 
   const cancelEdit = () => {
@@ -67,10 +92,16 @@ export function TimelineTab({ event }: { event: CulinaryEvent }) {
     setEditingId(null)
   }
 
-  const deleteStep = (id: string) => {
+  const deleteStep = async (id: string) => {
+    // Optimistic UI update
     setSteps((prev) => prev.filter((step) => step.id !== id))
     setDeletingId(null)
-    // TODO: persist step deletion via backend mutation
+
+    try {
+      await deleteTimelineStep(event.id, id)
+    } catch (err) {
+      console.error("Failed to delete timeline step in Supabase:", err)
+    }
   }
 
   return (

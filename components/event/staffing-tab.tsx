@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import type { CulinaryEvent, StaffGroup, StaffMember } from "@/lib/data"
+import { addStaffMember, updateStaffMember, deleteStaffMember } from "@/app/actions/staffing"
 
 function initials(name: string) {
   const parts = name.split(" ").filter(Boolean)
@@ -51,8 +52,11 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
     } as StaffMember & { team: string })
   }
 
-  const saveNewMember = () => {
+  const saveNewMember = async () => {
     if (!newMember.name.trim() || !newMember.role.trim()) return
+    
+    // Optimistic UI update
+    const tempId = `staff-${Date.now()}`
     setStaffingGroups((prev) =>
       prev.map((group) =>
         group.team === newMember.team
@@ -61,7 +65,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
               members: [
                 ...group.members,
                 {
-                  id: `staff-${Date.now()}`,
+                  id: tempId,
                   name: newMember.name,
                   role: newMember.role,
                   confirmed: newMember.confirmed,
@@ -76,7 +80,17 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
       ...defaultMember,
       team: event.staffing[0]?.team ?? "Prep Team",
     } as StaffMember & { team: string })
-    // TODO: persist new volunteer via backend mutation
+
+    try {
+      await addStaffMember(event.id, {
+        name: newMember.name,
+        role: newMember.role,
+        team: newMember.team as any,
+        confirmed: newMember.confirmed,
+      })
+    } catch (err) {
+      console.error("Failed to persist new staff member in Supabase:", err)
+    }
   }
 
   const startEditMember = (group: StaffGroup, member: StaffMember) => {
@@ -86,8 +100,10 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
     setDeletingId(null)
   }
 
-  const saveEditMember = () => {
+  const saveEditMember = async () => {
     if (!editingId || !editMember.name.trim() || !editMember.role.trim()) return
+    
+    // Optimistic UI update
     setStaffingGroups((prev) =>
       prev.map((group) =>
         group.team === editingTeam
@@ -101,7 +117,17 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
       ),
     )
     setEditingId(null)
-    // TODO: persist volunteer changes via backend mutation
+
+    try {
+      await updateStaffMember(event.id, editingId, {
+        name: editMember.name,
+        role: editMember.role,
+        team: editingTeam as any,
+        confirmed: editMember.confirmed,
+      })
+    } catch (err) {
+      console.error("Failed to update staff member in Supabase:", err)
+    }
   }
 
   const cancelEdit = () => {
@@ -114,7 +140,8 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
     setEditingId(null)
   }
 
-  const deleteMember = (id: string) => {
+  const deleteMember = async (id: string) => {
+    // Optimistic UI update
     setStaffingGroups((prev) =>
       prev.map((group) => ({
         ...group,
@@ -122,7 +149,12 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
       })),
     )
     setDeletingId(null)
-    // TODO: persist volunteer deletion via backend mutation
+
+    try {
+      await deleteStaffMember(event.id, id)
+    } catch (err) {
+      console.error("Failed to delete staff member in Supabase:", err)
+    }
   }
 
   const memberCount = staffingGroups.reduce((acc, group) => acc + group.members.length, 0)

@@ -2,11 +2,8 @@ import { notFound } from "next/navigation"
 
 import { EventHeader } from "@/components/event/event-header"
 import { EventTabs } from "@/components/event/event-tabs"
-import { getEvent, events } from "@/lib/data"
-
-export function generateStaticParams() {
-  return events.map((e) => ({ id: e.id }))
-}
+import { getEvent } from "@/lib/data"
+import { fetchEventDetails } from "@/lib/queries"
 
 export default async function EventWorkspacePage({
   params,
@@ -14,7 +11,12 @@ export default async function EventWorkspacePage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const event = getEvent(id)
+  
+  // Try fetching from database first, fallback to mock data
+  let event = await fetchEventDetails(id)
+  if (!event) {
+    event = getEvent(id) || null
+  }
 
   if (!event) {
     notFound()
@@ -27,3 +29,4 @@ export default async function EventWorkspacePage({
     </main>
   )
 }
+

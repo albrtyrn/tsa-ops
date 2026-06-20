@@ -6,9 +6,14 @@ import { MetricCards } from "@/components/dashboard/metric-cards"
 import { ActionRequired } from "@/components/dashboard/action-required"
 import { EventCard } from "@/components/event-card"
 import { Button } from "@/components/ui/button"
-import { events } from "@/lib/data"
+import { events as mockEvents } from "@/lib/data"
+import { fetchAllEvents } from "@/lib/queries"
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  let events = await fetchAllEvents()
+  if (!events || events.length === 0) {
+    events = mockEvents
+  }
   const upcoming = events.filter((e) => e.status !== "Completed")
 
   return (

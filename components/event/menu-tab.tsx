@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import type { CulinaryEvent, Dish } from "@/lib/data"
+import { addDish, updateDish, deleteDish as deleteDishAction } from "@/app/actions/dishes"
 
 const defaultDish: Omit<Dish, "id"> = {
   name: "",
@@ -37,15 +38,28 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
     setNewDish({ ...defaultDish, category: event.menu[0]?.category ?? "Starter" })
   }
 
-  const saveNewDish = () => {
+  const saveNewDish = async () => {
     if (!newDish.name.trim()) return
+    
+    // Optimistic UI update
+    const tempId = `dish-${Date.now()}`
     setMenuItems((prev) => [
       ...prev,
-      { id: `dish-${Date.now()}`, ...newDish },
+      { id: tempId, ...newDish },
     ])
     setNewDish({ ...defaultDish })
     setIsAdding(false)
-    // TODO: persist new dish via backend mutation
+
+    try {
+      await addDish(event.id, {
+        name: newDish.name,
+        category: newDish.category,
+        servings: newDish.servings,
+        estimated_cost: newDish.estimatedCost,
+      })
+    } catch (err) {
+      console.error("Failed to persist new dish in Supabase:", err)
+    }
   }
 
   const startEditDish = (dish: Dish) => {
@@ -54,11 +68,23 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
     setDeletingId(null)
   }
 
-  const saveEditDish = () => {
+  const saveEditDish = async () => {
     if (!editingId || !editDish.name.trim()) return
+    
+    // Optimistic UI update
     setMenuItems((prev) => prev.map((item) => (item.id === editingId ? editDish : item)))
     setEditingId(null)
-    // TODO: persist edited dish via backend mutation
+
+    try {
+      await updateDish(event.id, editingId, {
+        name: editDish.name,
+        category: editDish.category,
+        servings: editDish.servings,
+        estimated_cost: editDish.estimatedCost,
+      })
+    } catch (err) {
+      console.error("Failed to update dish in Supabase:", err)
+    }
   }
 
   const cancelEdit = () => {
@@ -71,10 +97,16 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
     setEditingId(null)
   }
 
-  const deleteDish = (id: string) => {
+  const deleteDish = async (id: string) => {
+    // Optimistic UI update
     setMenuItems((prev) => prev.filter((item) => item.id !== id))
     setDeletingId(null)
-    // TODO: persist dish deletion via backend mutation
+
+    try {
+      await deleteDishAction(event.id, id)
+    } catch (err) {
+      console.error("Failed to delete dish in Supabase:", err)
+    }
   }
 
   const total = menuItems.reduce((acc, dish) => acc + dish.estimatedCost, 0)
