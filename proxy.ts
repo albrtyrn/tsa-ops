@@ -1,6 +1,8 @@
+// proxy.ts (at the root of your project)
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
+// ✅ Explicitly export it as 'proxy' so the Next.js 16 engine picks it up
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -11,8 +13,12 @@ export async function proxy(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
+  // Safe early return forwarding context
   if (!supabaseUrl || !supabaseAnonKey) {
-    return response
+    console.error("Supabase environmental keys are missing!")
+    return NextResponse.next({
+      request: request
+    })
   }
 
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
@@ -32,7 +38,6 @@ export async function proxy(request: NextRequest) {
     },
   })
 
-  // Retrieve user session
   const { data: { user } } = await supabase.auth.getUser()
 
   const isAuthPage = request.nextUrl.pathname.startsWith("/login") || 
@@ -40,17 +45,13 @@ export async function proxy(request: NextRequest) {
                      request.nextUrl.pathname.startsWith("/auth/callback")
   
   const isOnboardingPage = request.nextUrl.pathname.startsWith("/onboarding")
-
-  // Cache the clean origin string for redirects
   const origin = request.nextUrl.origin
 
   if (!user && !isAuthPage) {
-    // ✅ Safe absolute redirect using origin
     return NextResponse.redirect(new URL("/login", origin))
   }
 
   if (user) {
-    // Safe onboarding state check
     let hasCompletedOnboarding = true
     try {
       const { data: profile, error } = await supabase
@@ -67,17 +68,14 @@ export async function proxy(request: NextRequest) {
     }
 
     if (!hasCompletedOnboarding && !isOnboardingPage && !isAuthPage) {
-      // ✅ Safe absolute redirect using origin
       return NextResponse.redirect(new URL("/onboarding", origin))
     }
 
     if (hasCompletedOnboarding && isOnboardingPage) {
-      // ✅ Safe absolute redirect using origin
       return NextResponse.redirect(new URL("/", origin))
     }
 
     if (isAuthPage) {
-      // ✅ Safe absolute redirect using origin
       return NextResponse.redirect(new URL("/", origin))
     }
   }
@@ -85,6 +83,7 @@ export async function proxy(request: NextRequest) {
   return response
 }
 
+// ✅ Keep the matcher block right here in proxy.ts
 export const config = {
   matcher: [
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
