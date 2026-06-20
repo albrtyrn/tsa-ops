@@ -45,7 +45,13 @@ NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
-### 3. Install Dependencies
+### 3. Database Seeding (Optional)
+To populate your Supabase tables with the mock event planner dataset (TSA Night Market, Mid-Autumn Festival, etc.):
+1. Open the Supabase Dashboard SQL Editor.
+2. Copy the contents of the generated [supabase/seed.sql](file:///C:/Users/yorna/Documents/vscode/tsa-ops/supabase/seed.sql) script.
+3. Run the query. This will truncate the tables and populate mock events, dishes, staffing lists, timelines, grocery runs, equipment loans, reimbursements, action items, and retrospective lessons.
+
+### 4. Install Dependencies
 ```bash
 pnpm install
 ```

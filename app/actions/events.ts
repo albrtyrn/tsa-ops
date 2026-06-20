@@ -45,6 +45,10 @@ export async function updateEvent(
     attendees?: number
     budget?: number
     status?: string
+    venue_status?: string
+    funding_status?: string
+    google_sheets_link?: string
+    debrief_doc_link?: string
   }
 ) {
   const supabase = await createClient()

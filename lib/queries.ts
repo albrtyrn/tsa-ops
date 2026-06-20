@@ -54,6 +54,7 @@ export async function fetchEventDetails(id: string) {
         name: m.name,
         role: m.role,
         confirmed: m.confirmed,
+        responsibilities: m.responsibilities,
       })),
   }))
 
@@ -74,6 +75,7 @@ export async function fetchEventDetails(id: string) {
         name: i.name,
         quantity: i.quantity,
         checked: i.checked,
+        storage_location: i.storage_location,
       })),
   }))
 
@@ -136,6 +138,8 @@ export async function fetchEventDetails(id: string) {
       category: d.category,
       servings: d.servings,
       estimatedCost: Number(d.estimated_cost),
+      recipe_status: d.recipe_status,
+      google_doc_link: d.google_doc_link,
     })),
     staffing,
     timeline: (event.timeline || []).map((t: any) => ({
@@ -179,6 +183,10 @@ export async function fetchEventDetails(id: string) {
       title: l.title,
       body: l.body,
     })),
+    venue_status: event.venue_status,
+    funding_status: event.funding_status,
+    google_sheets_link: event.google_sheets_link,
+    debrief_doc_link: event.debrief_doc_link,
   }
 }
 
@@ -235,4 +243,57 @@ export async function fetchAllEvents() {
       isArchived: event.is_archived,
     }
   })
+}
+
+export async function fetchAnalyticsData() {
+  let supabase
+  try {
+    supabase = await createClient()
+  } catch (e) {
+    console.warn("Failed to initialize server client in fetchAnalyticsData. Falling back to empty array.")
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from("view_analytics_budget_accuracy")
+    .select("*")
+    .order("date", { ascending: true })
+
+  if (error) {
+    console.error("Error fetching analytics data:", error.message, "Details:", error.details, "Hint:", error.hint, error)
+    return []
+  }
+
+  return data.map((item: any) => ({
+    eventId: item.event_id,
+    eventName: item.event_name,
+    status: item.status,
+    date: item.date,
+    budget: Number(item.budget),
+    spent: Number(item.spent),
+    variance: Number(item.variance),
+    budgetBurnPercentage: Number(item.budget_burn_percentage),
+  }))
+}
+
+export async function fetchTotalConfirmedVolunteers() {
+  let supabase
+  try {
+    supabase = await createClient()
+  } catch (e) {
+    console.warn("Failed to initialize server client in fetchTotalConfirmedVolunteers. Falling back to 0.")
+    return 0
+  }
+
+  const { count, error } = await supabase
+    .from("staff_members")
+    .select("*", { count: "exact", head: true })
+    .eq("confirmed", true)
+
+  if (error) {
+    console.error("Error fetching total confirmed volunteers:", error.message)
+    return 0
+  }
+
+  return count || 0
 }

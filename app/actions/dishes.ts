@@ -10,6 +10,8 @@ export async function addDish(
     category: string
     servings: number
     estimated_cost: number
+    recipe_status?: "Untested" | "In Progress" | "D-Day Ready"
+    google_doc_link?: string
   }
 ) {
   const supabase = await createClient()
@@ -23,6 +25,8 @@ export async function addDish(
         category: dish.category,
         servings: dish.servings,
         estimated_cost: dish.estimated_cost,
+        recipe_status: dish.recipe_status || "Untested",
+        google_doc_link: dish.google_doc_link || null,
       },
     ])
     .select()
@@ -44,6 +48,8 @@ export async function updateDish(
     category?: string
     servings?: number
     estimated_cost?: number
+    recipe_status?: "Untested" | "In Progress" | "D-Day Ready"
+    google_doc_link?: string | null
   }
 ) {
   const supabase = await createClient()

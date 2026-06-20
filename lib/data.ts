@@ -33,6 +33,8 @@ export type Dish = {
   category: string
   servings: number
   estimatedCost: number
+  recipe_status?: "Untested" | "In Progress" | "D-Day Ready"
+  google_doc_link?: string
 }
 
 export type StaffMember = {
@@ -40,6 +42,7 @@ export type StaffMember = {
   name: string
   role: string
   confirmed: boolean
+  responsibilities?: string
 }
 
 export type StaffGroup = {
@@ -60,6 +63,7 @@ export type ShoppingItem = {
   name: string
   quantity: string
   checked: boolean
+  storage_location?: string
 }
 
 export type ShoppingGroup = {
@@ -94,6 +98,10 @@ export type CulinaryEvent = {
   reimbursements: ReimbursementEntry[]
   reflection: { whatWorked: string; whatFailed: string }
   lessons: LessonCard[]
+  venue_status?: "Requested" | "Approved" | "Denied"
+  funding_status?: "Pending Review" | "Approved" | "Rejected"
+  google_sheets_link?: string
+  debrief_doc_link?: string
 }
 
 export type ActionItem = {

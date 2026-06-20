@@ -219,6 +219,7 @@ create or replace view public.view_analytics_budget_accuracy as
 select
     id as event_id,
     name as event_name,
+    status,
     date,
     budget,
     dynamic_spent as spent,
@@ -279,12 +280,12 @@ create policy "Members can submit/edit their own reimbursement requests"
         buyer_id = auth.uid()
     );
 
-create policy "Treasurers can manage all reimbursements"
+create policy "Officers can manage all reimbursements"
     on public.reimbursements for all using (
         exists (
             select 1 from public.profiles
             where profiles.id = auth.uid()
-              and profiles.role in ('executive', 'advisor')
+              and profiles.role in ('executive', 'officer', 'culinary', 'advisor')
         )
     );
 

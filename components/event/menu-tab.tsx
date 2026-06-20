@@ -1,12 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Edit2, Plus, Trash2, X } from "lucide-react"
+import { Edit2, Plus, Trash2, X, FileText, Check, Link } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import type { CulinaryEvent, Dish } from "@/lib/data"
 import { addDish, updateDish, deleteDish as deleteDishAction } from "@/app/actions/dishes"
@@ -16,7 +15,11 @@ const defaultDish: Omit<Dish, "id"> = {
   category: "Starter",
   servings: 1,
   estimatedCost: 0,
+  recipe_status: "Untested",
+  google_doc_link: "",
 }
+
+const statusOptions = ["Untested", "In Progress", "D-Day Ready"] as const
 
 export function MenuTab({ event }: { event: CulinaryEvent }) {
   const [menuItems, setMenuItems] = useState<Dish[]>(() => event.menu)
@@ -56,6 +59,8 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
         category: newDish.category,
         servings: newDish.servings,
         estimated_cost: newDish.estimatedCost,
+        recipe_status: newDish.recipe_status,
+        google_doc_link: newDish.google_doc_link,
       })
     } catch (err) {
       console.error("Failed to persist new dish in Supabase:", err)
@@ -81,6 +86,8 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
         category: editDish.category,
         servings: editDish.servings,
         estimated_cost: editDish.estimatedCost,
+        recipe_status: editDish.recipe_status,
+        google_doc_link: editDish.google_doc_link || null,
       })
     } catch (err) {
       console.error("Failed to update dish in Supabase:", err)
@@ -144,7 +151,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
             </div>
           </CardHeader>
           <CardContent className="flex flex-col gap-4 py-4">
-            <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
                   Name
@@ -190,6 +197,32 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                 />
               </div>
             </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border-t border-border/50 pt-4">
+              <div>
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                  Recipe Status
+                </div>
+                <select
+                  className="h-9 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1.5 text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 text-foreground"
+                  value={newDish.recipe_status}
+                  onChange={(e) => setNewDish({ ...newDish, recipe_status: e.target.value as any })}
+                >
+                  {statusOptions.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                  Recipe Google Doc Link
+                </div>
+                <Input
+                  value={newDish.google_doc_link}
+                  placeholder="https://docs.google.com/document/..."
+                  onChange={(e) => setNewDish({ ...newDish, google_doc_link: e.target.value })}
+                />
+              </div>
+            </div>
           </CardContent>
         </Card>
       ) : null}
@@ -198,38 +231,49 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
         {menuItems.map((dish) => {
           const isEditing = editingId === dish.id
           const isDeleting = deletingId === dish.id
+          const recipeStatus = dish.recipe_status || "Untested"
+
           return (
             <Card key={dish.id} className="group/card border border-border bg-card shadow-sm hover:border-primary/30 transition-all">
               <CardHeader className="items-start gap-4">
-                <div>
-                  <CardTitle className="text-sm font-semibold">{dish.name}</CardTitle>
-                  <Badge variant="secondary" className="mt-1 bg-secondary text-secondary-foreground">{dish.category}</Badge>
+                <div className="flex-1 min-w-0">
+                  <CardTitle className="text-sm font-semibold truncate">{dish.name}</CardTitle>
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                    <Badge variant="secondary" className="bg-secondary text-secondary-foreground text-[10px]">{dish.category}</Badge>
+                    <span className={`inline-flex px-1.5 py-0.5 rounded-[4px] text-[9px] font-semibold border uppercase tracking-wide ${
+                      recipeStatus === "D-Day Ready" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                      recipeStatus === "In Progress" ? "bg-amber-50 text-amber-700 border-amber-200" :
+                      "bg-muted/70 text-muted-foreground border-border"
+                    }`}>
+                      {recipeStatus}
+                    </span>
+                  </div>
                 </div>
                 <CardAction className="flex gap-1 opacity-0 transition-opacity group-hover/card:opacity-100">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-muted-foreground hover:text-primary hover:bg-accent"
+                    className="text-muted-foreground hover:text-primary hover:bg-accent h-7 w-7"
                     onClick={() => startEditDish(dish)}
                   >
-                    <Edit2 className="size-4" />
+                    <Edit2 className="size-3.5" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-7 w-7"
                     onClick={() => confirmDeleteDish(dish.id)}
                   >
-                    <Trash2 className="size-4" />
+                    <Trash2 className="size-3.5" />
                   </Button>
                 </CardAction>
               </CardHeader>
               <CardContent className="flex flex-col gap-3 py-1">
                 {isEditing ? (
                   <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                       <div>
-                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                           Name
                         </div>
                         <Input
@@ -238,7 +282,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                         />
                       </div>
                       <div>
-                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                           Category
                         </div>
                         <Input
@@ -247,9 +291,9 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                         />
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                           Servings
                         </div>
                         <Input
@@ -259,8 +303,8 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                         />
                       </div>
                       <div>
-                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
-                          Estimated cost
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                          Cost
                         </div>
                         <Input
                           type="number"
@@ -269,7 +313,33 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                         />
                       </div>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 border-t border-border/40 pt-2">
+                      <div>
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                          Recipe Status
+                        </div>
+                        <select
+                          className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 text-foreground"
+                          value={editDish.recipe_status}
+                          onChange={(e) => setEditDish({ ...editDish, recipe_status: e.target.value as any })}
+                        >
+                          {statusOptions.map((opt) => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                          Doc Link
+                        </div>
+                        <Input
+                          value={editDish.google_doc_link || ""}
+                          placeholder="https://docs.google.com..."
+                          onChange={(e) => setEditDish({ ...editDish, google_doc_link: e.target.value })}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
                       <Button variant="default" size="sm" onClick={saveEditDish}>
                         Save
                       </Button>
@@ -284,6 +354,18 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                       <span className="text-muted-foreground">{dish.servings} servings</span>
                       <span className="font-medium text-foreground tabular-nums">${dish.estimatedCost.toLocaleString()}</span>
                     </div>
+                    
+                    {dish.google_doc_link && (
+                      <div className="mt-1">
+                        <Button variant="ghost" size="sm" className="h-7 px-2 hover:bg-accent text-xs flex items-center gap-1.5 text-primary" nativeButton={false} render={
+                          <a href={dish.google_doc_link} target="_blank" rel="noopener noreferrer">
+                            <FileText className="size-3.5" />
+                            View Recipe Doc
+                          </a>
+                        } />
+                      </div>
+                    )}
+
                     {isDeleting ? (
                       <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm mt-3 animate-fade-in">
                         <p className="text-sm font-medium text-destructive">Delete this dish?</p>

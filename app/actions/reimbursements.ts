@@ -15,12 +15,20 @@ export async function addReimbursement(
 ) {
   const supabase = await createClient()
 
+  let buyerId = reimbursement.buyer_id || null
+  if (!buyerId) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      buyerId = user.id
+    }
+  }
+
   const { data, error } = await supabase
     .from("reimbursements")
     .insert([
       {
         event_id: eventId,
-        buyer_id: reimbursement.buyer_id || null,
+        buyer_id: buyerId,
         buyer_name_fallback: reimbursement.buyer_name_fallback || null,
         purpose: reimbursement.purpose,
         amount: reimbursement.amount,
