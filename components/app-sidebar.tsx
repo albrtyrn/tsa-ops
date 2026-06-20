@@ -8,8 +8,8 @@ import {
   LayoutTemplate,
   BarChart3,
   Settings,
-  ChefHat,
 } from "lucide-react"
+import Image from "next/image"
 
 import {
   Sidebar,
@@ -37,13 +37,20 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-8 py-2">
-          <div className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <ChefHat className="size-4" />
+        <div className="flex items-center gap-3 px-8 py-4">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-white border border-border shadow-sm overflow-hidden p-1">
+            <Image 
+              src="/tsaatuva.png" 
+              alt="TSA Logo" 
+              width={44} 
+              height={44} 
+              className="object-contain size-full"
+              priority
+            />
           </div>
-          <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold">TSA Culinary</span>
-            <span className="text-xs text-muted-foreground">Ops Copilot</span>
+          <div className="flex flex-col leading-none">
+            <span className="text-base font-bold text-foreground tracking-tight">TSA Culinary</span>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mt-0.5">Ops Copilot</span>
           </div>
         </div>
       </SidebarHeader>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Edit2, Plus, Trash2, X } from "lucide-react"
-
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"

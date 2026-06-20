@@ -13,25 +13,17 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'TSA Culinary Operations',
-  description: 'Lightweight student org planning hub for TSA food events, grocery runs, and volunteer coordination.',
-  generator: 'TSA Culinary Ops',
+  title: 'TSA @ UVA Culinary Operations',
+  description: 'Lightweight student organization planning hub for TSA at UVA food events, grocery runs, and volunteer coordination.',
+  generator: 'TSA at UVA Culinary Ops',
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/tsaatuva.png',
+        type: 'image/png',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/tsaatuva.png',
   },
 }
 
