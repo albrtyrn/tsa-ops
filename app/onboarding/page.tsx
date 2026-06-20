@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react"
 import { Sparkles, Loader2, Home, UserPlus, Shield } from "lucide-react"
+import { isRedirectError } from "next/dist/client/components/redirect-error"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -73,6 +74,9 @@ export default function OnboardingPage() {
           workspaceSlug: workspaceSlug,
         })
       } catch (err: any) {
+        if (isRedirectError(err)) {
+          throw err
+        }
         setError(err.message || "Something went wrong during onboarding.")
       }
     })

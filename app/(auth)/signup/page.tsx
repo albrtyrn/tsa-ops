@@ -3,6 +3,7 @@
 import { useActionState, startTransition } from "react"
 import Link from "next/link"
 import { Sparkles, Loader2, ArrowRight } from "lucide-react"
+import { isRedirectError } from "next/dist/client/components/redirect-error"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,13 +12,22 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { signupAction } from "@/app/actions/auth"
 
 export default function SignupPage() {
-  const [error, action, isPending] = useActionState(
-    async (_state: string | null, formData: FormData) => {
+  const [state, action, isPending] = useActionState(
+    async (
+      _state: { success?: boolean; message?: string; error?: string } | null,
+      formData: FormData
+    ) => {
       try {
-        await signupAction(formData)
-        return null
+        const res = await signupAction(formData)
+        if (res?.needsConfirmation) {
+          return { success: true, message: res.message }
+        }
+        return { success: true, message: "Account created successfully! Redirecting..." }
       } catch (err: any) {
-        return err.message || "An unexpected error occurred."
+        if (isRedirectError(err)) {
+          throw err
+        }
+        return { success: false, error: err.message || "An unexpected error occurred." }
       }
     },
     null
@@ -45,9 +55,15 @@ export default function SignupPage() {
         </CardHeader>
         <CardContent className="px-8 pb-8">
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
+            {state?.error && (
               <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3.5 text-xs font-semibold text-destructive animate-shake">
-                {error}
+                {state.error}
+              </div>
+            )}
+
+            {state?.success && state?.message && (
+              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3.5 text-xs font-semibold text-emerald-500 animate-fade-in">
+                {state.message}
               </div>
             )}
 

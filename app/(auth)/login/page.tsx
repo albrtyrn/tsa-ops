@@ -3,6 +3,7 @@
 import { useActionState, startTransition } from "react"
 import Link from "next/link"
 import { Sparkles, Loader2, ArrowRight } from "lucide-react"
+import { isRedirectError } from "next/dist/client/components/redirect-error"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,13 +12,19 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { loginAction } from "@/app/actions/auth"
 
 export default function LoginPage() {
-  const [error, action, isPending] = useActionState(
-    async (_state: string | null, formData: FormData) => {
+  const [state, action, isPending] = useActionState(
+    async (
+      _state: { success?: boolean; message?: string; error?: string } | null,
+      formData: FormData
+    ) => {
       try {
         await loginAction(formData)
-        return null
+        return { success: true, message: "Sign in successful! Redirecting..." }
       } catch (err: any) {
-        return err.message || "An unexpected error occurred."
+        if (isRedirectError(err)) {
+          throw err
+        }
+        return { success: false, error: err.message || "An unexpected error occurred." }
       }
     },
     null
@@ -38,16 +45,22 @@ export default function LoginPage() {
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/20">
             <Sparkles className="h-6 w-6" />
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight">Welcome Back</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight">Welcome Back TSAer :D</CardTitle>
           <CardDescription>
-            Enter your credentials to access the Culinary Operations Copilot
+            Sign in!
           </CardDescription>
         </CardHeader>
         <CardContent className="px-8 pb-8">
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
+            {state?.error && (
               <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3.5 text-xs font-semibold text-destructive animate-shake">
-                {error}
+                {state.error}
+              </div>
+            )}
+
+            {state?.success && state?.message && (
+              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3.5 text-xs font-semibold text-emerald-500 animate-fade-in">
+                {state.message}
               </div>
             )}
             

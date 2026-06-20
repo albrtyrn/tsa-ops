@@ -50,9 +50,17 @@ export async function signupAction(formData: FormData) {
     throw new Error(error.message)
   }
 
-  // Redirect to onboarding
-  revalidatePath("/")
-  redirect("/onboarding")
+  // If a session is returned, the user is auto-confirmed/logged in
+  if (data.session) {
+    revalidatePath("/")
+    redirect("/onboarding")
+  }
+
+  // Otherwise, email confirmation is required
+  return {
+    needsConfirmation: true,
+    message: "Account created successfully! Please check your email to confirm your registration before signing in.",
+  }
 }
 
 export async function logoutAction() {
