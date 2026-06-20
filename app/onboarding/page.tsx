@@ -17,7 +17,7 @@ export default function OnboardingPage() {
   
   // Profile inputs
   const [name, setName] = useState("")
-  const [role, setRole] = useState<"Volunteer" | "Officer" | "Treasurer">("Volunteer")
+  const [role, setRole] = useState<"executive" | "officer" | "culinary" | "advisor" | "volunteer">("volunteer")
   const [venmoHandle, setVenmoHandle] = useState("")
   const [vehicleType, setVehicleType] = useState<"Sedan" | "SUV" | "Minivan" | "Pickup" | "None">("None")
   
@@ -103,9 +103,11 @@ export default function OnboardingPage() {
                     onChange={(e: any) => setRole(e.target.value)}
                     className="h-9 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1.5 text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 text-foreground"
                   >
-                    <option value="Volunteer">Volunteer</option>
-                    <option value="Officer">Officer</option>
-                    <option value="Treasurer">Treasurer</option>
+                    <option value="executive">Executive</option>
+                    <option value="officer">Officer</option>
+                    <option value="culinary">Culinary</option>
+                    <option value="advisor">Advisor</option>
+                    <option value="volunteer">Volunteer</option>
                   </select>
                 </div>
               </div>

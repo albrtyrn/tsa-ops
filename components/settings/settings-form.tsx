@@ -13,7 +13,7 @@ interface SettingsFormProps {
   initialProfile: {
     id: string
     name: string
-    role: "Volunteer" | "Officer" | "Treasurer"
+    role: "executive" | "officer" | "culinary" | "advisor" | "volunteer"
     venmo_handle?: string | null
     vehicle_type: "Sedan" | "SUV" | "Minivan" | "Pickup" | "None"
   } | null
@@ -26,8 +26,8 @@ export function SettingsForm({ initialProfile }: SettingsFormProps) {
 
   // Profile inputs state
   const [name, setName] = useState(initialProfile?.name || "")
-  const [role, setRole] = useState<"Volunteer" | "Officer" | "Treasurer">(
-    initialProfile?.role || "Volunteer"
+  const [role, setRole] = useState<"executive" | "officer" | "culinary" | "advisor" | "volunteer">(
+    initialProfile?.role || "volunteer"
   )
   const [venmoHandle, setVenmoHandle] = useState(initialProfile?.venmo_handle || "")
   const [vehicleType, setVehicleType] = useState<"Sedan" | "SUV" | "Minivan" | "Pickup" | "None">(
@@ -115,9 +115,11 @@ export function SettingsForm({ initialProfile }: SettingsFormProps) {
                   onChange={(e: any) => setRole(e.target.value)}
                   className="h-10 w-full min-w-0 rounded-lg border border-input bg-background/50 px-3 py-1.5 text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 text-foreground"
                 >
-                  <option value="Volunteer">Volunteer</option>
-                  <option value="Officer">Officer</option>
-                  <option value="Treasurer">Treasurer</option>
+                  <option value="executive">Executive</option>
+                  <option value="officer">Officer</option>
+                  <option value="culinary">Culinary</option>
+                  <option value="advisor">Advisor</option>
+                  <option value="volunteer">Volunteer</option>
                 </select>
               </div>
             </div>

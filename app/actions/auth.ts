@@ -72,7 +72,7 @@ export async function logoutAction() {
 
 export async function onboardUserAction(data: {
   name: string
-  role: "Volunteer" | "Officer" | "Treasurer"
+  role: "executive" | "officer" | "culinary" | "advisor" | "volunteer"
   venmoHandle: string
   vehicleType: "Sedan" | "SUV" | "Minivan" | "Pickup" | "None"
 }) {
@@ -115,7 +115,7 @@ export async function onboardUserAction(data: {
 
 export async function updateProfileAction(data: {
   name: string
-  role: "Volunteer" | "Officer" | "Treasurer"
+  role: "executive" | "officer" | "culinary" | "advisor" | "volunteer"
   venmoHandle: string
   vehicleType: "Sedan" | "SUV" | "Minivan" | "Pickup" | "None"
 }) {

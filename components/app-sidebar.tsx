@@ -60,34 +60,16 @@ export function AppSidebar() {
             setProfile({ name: data.name, role: data.role })
           } else {
             setProfile({
-              name: user.user_metadata?.name || user.email || "Culinary Officer",
-              role: user.user_metadata?.role || "Officer",
+              name: user.user_metadata?.name || user.email || "",
+              role: user.user_metadata?.role || "",
             })
           }
         } else {
-          // Fallback if no user session is active (e.g. local dev mock state)
-          setProfile({
-            name: "Albert Yorn",
-            role: "Culinary Chair",
-          })
+          setProfile(null)
         }
       } catch (err) {
-        console.warn("Could not fetch user profile details, checking auth session fallback:", err)
-        try {
-          const { data: { user } } = await supabase.auth.getUser()
-          if (user) {
-            setProfile({
-              name: user.user_metadata?.name || user.email || "Culinary Officer",
-              role: user.user_metadata?.role || "Officer",
-            })
-            return
-          }
-        } catch {}
-
-        setProfile({
-          name: "Albert Yorn",
-          role: "Culinary Chair",
-        })
+        console.warn("Could not fetch user profile details:", err)
+        setProfile(null)
       }
     }
     loadProfile()
@@ -103,7 +85,7 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-3 px-8 py-4">
+        <div className="flex items-center gap-3 px-8 py-4 group-data-[state=collapsed]:px-2 group-data-[state=collapsed]:justify-center">
           <div className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-white border border-border shadow-sm overflow-hidden p-1">
             <Image 
               src="/tsaatuva.png" 
@@ -114,14 +96,14 @@ export function AppSidebar() {
               priority
             />
           </div>
-          <div className="flex flex-col leading-none">
+          <div className="flex flex-col leading-none group-data-[state=collapsed]:hidden">
             <span className="text-base font-bold text-foreground tracking-tight">TSA Culinary</span>
             <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mt-0.5">Operations</span>
           </div>
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup className="px-8 py-2">
+        <SidebarGroup className="px-8 py-2 group-data-[state=collapsed]:px-2">
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => {
@@ -150,29 +132,27 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center justify-between gap-2 px-8 py-4 border-t border-border/40">
-          {profile ? (
-            <div className="flex items-center gap-2 overflow-hidden">
-              <Avatar className="size-8">
+        <div className="flex items-center justify-between gap-2 px-8 py-4 border-t border-border/40 group-data-[state=collapsed]:px-2 group-data-[state=collapsed]:justify-center">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <Avatar className="size-8">
+              {profile?.name ? (
                 <AvatarFallback>{getInitials(profile.name)}</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col leading-tight overflow-hidden">
-                <span className="text-sm font-semibold truncate max-w-[110px]">{profile.name}</span>
-                <span className="text-[10px] text-muted-foreground truncate max-w-[110px]">{profile.role}</span>
-              </div>
+              ) : (
+                <AvatarFallback className="bg-muted" />
+              )}
+            </Avatar>
+            <div className="flex flex-col leading-tight overflow-hidden group-data-[state=collapsed]:hidden">
+              <span className="text-sm font-semibold truncate max-w-[110px]">
+                {profile?.name || ""}
+              </span>
+              <span className="text-[10px] text-muted-foreground truncate max-w-[110px]">
+                {profile?.role ? profile.role.charAt(0).toUpperCase() + profile.role.slice(1) : ""}
+              </span>
             </div>
-          ) : (
-            <div className="flex items-center gap-2 overflow-hidden animate-pulse">
-              <div className="size-8 rounded-full bg-muted shrink-0" />
-              <div className="flex flex-col gap-1.5 overflow-hidden">
-                <div className="h-3 w-20 bg-muted rounded" />
-                <div className="h-2.5 w-14 bg-muted rounded" />
-              </div>
-            </div>
-          )}
+          </div>
           <button
             onClick={() => logoutAction()}
-            className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer shrink-0"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer shrink-0 group-data-[state=collapsed]:hidden"
             title="Log out"
           >
             <LogOut className="size-4.5" />

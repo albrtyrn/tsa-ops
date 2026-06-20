@@ -5,7 +5,7 @@ create extension if not exists "uuid-ossp";
 -- 1. POSTGRES ENUMS & CUSTOM TYPES
 -- =========================================================================
 
-create type user_role as enum ('Volunteer', 'Officer', 'Treasurer');
+create type user_role as enum ('executive', 'officer', 'culinary', 'advisor', 'volunteer');
 create type member_role as enum ('Member', 'Admin');
 create type event_status as enum ('Planning', 'Ready', 'Needs Attention', 'Completed');
 create type team_type as enum ('Prep Team', 'Cooking Team', 'Serving Team', 'Support Team');
@@ -23,7 +23,7 @@ create type action_item_type as enum ('Staffing', 'Shopping', 'Menu', 'Budget');
 create table public.profiles (
     id uuid references auth.users on delete cascade primary key,
     name text not null,
-    role user_role not null default 'Volunteer',
+    role user_role not null default 'volunteer',
     venmo_handle text,
     vehicle_type vehicle_type not null default 'None',
     onboarded boolean not null default false,
@@ -266,7 +266,7 @@ create policy "Officers can manage events"
         exists (
             select 1 from public.profiles
             where profiles.id = auth.uid()
-              and profiles.role in ('Officer', 'Treasurer')
+              and profiles.role in ('executive', 'officer', 'culinary', 'advisor')
         )
     );
 
@@ -284,7 +284,7 @@ create policy "Treasurers can manage all reimbursements"
         exists (
             select 1 from public.profiles
             where profiles.id = auth.uid()
-              and profiles.role = 'Treasurer'
+              and profiles.role in ('executive', 'advisor')
         )
     );
 
@@ -299,7 +299,7 @@ begin
   values (
     new.id,
     coalesce(new.raw_user_meta_data->>'name', 'New User'),
-    'Volunteer'
+    'volunteer'
   );
   return new;
 end;
