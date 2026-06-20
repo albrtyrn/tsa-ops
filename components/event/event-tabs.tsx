@@ -1,5 +1,7 @@
 "use client"
 
+import { Suspense, useEffect, useState } from "react"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
@@ -32,7 +34,37 @@ const tabTransition = {
 
 export function EventTabs({ event }: { event: CulinaryEvent }) {
   return (
-    <Tabs defaultValue="overview" className="gap-6">
+    <Suspense fallback={<div className="text-sm text-muted-foreground py-8">Loading workspace...</div>}>
+      <EventTabsContent event={event} />
+    </Suspense>
+  )
+}
+
+function EventTabsContent({ event }: { event: CulinaryEvent }) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const tabParam = searchParams.get("tab")
+  const defaultTab = tabParam && tabs.some((t) => t.value === tabParam) ? tabParam : "overview"
+
+  const [activeTab, setActiveTab] = useState(defaultTab)
+
+  useEffect(() => {
+    if (tabParam && tabs.some((t) => t.value === tabParam)) {
+      setActiveTab(tabParam)
+    }
+  }, [tabParam])
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value)
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("tab", value)
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
+  return (
+    <Tabs value={activeTab} onValueChange={handleTabChange} className="gap-6">
       <div className="overflow-x-auto">
         <TabsList variant="line" className="w-max">
           {tabs.map((t) => (

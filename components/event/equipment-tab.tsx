@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { CulinaryEvent, EquipmentLoan } from "@/lib/data"
+import { addEquipmentLoan, updateEquipmentLoan, deleteEquipmentLoan } from "@/app/actions/equipment"
 
 const defaultLoan: Omit<EquipmentLoan, "id"> = {
   item: "",
@@ -39,12 +40,22 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
     setNewLoan({ ...defaultLoan })
   }
 
-  const saveNewLoan = () => {
+  const saveNewLoan = async () => {
     if (!newLoan.item.trim() || !newLoan.owner.trim()) return
-    setLoans((prev) => [...prev, { id: `loan-${Date.now()}`, ...newLoan }])
+    const tempId = `loan-${Date.now()}`
+    setLoans((prev) => [...prev, { id: tempId, ...newLoan }])
     setNewLoan({ ...defaultLoan })
     setIsAdding(false)
-    // TODO: persist new loan via backend mutation
+    try {
+      await addEquipmentLoan(event.id, {
+        item: newLoan.item,
+        owner_name_fallback: newLoan.owner,
+        date_brought: newLoan.dateBrought,
+        date_returned: newLoan.dateReturned,
+      })
+    } catch (err) {
+      console.error("Failed to persist new loan in Supabase:", err)
+    }
   }
 
   const startEditLoan = (loan: EquipmentLoan) => {
@@ -53,11 +64,21 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
     setDeletingId(null)
   }
 
-  const saveEditLoan = () => {
+  const saveEditLoan = async () => {
     if (!editingId || !editLoan.item.trim() || !editLoan.owner.trim()) return
     setLoans((prev) => prev.map((loan) => (loan.id === editingId ? editLoan : loan)))
     setEditingId(null)
-    // TODO: persist loan changes via backend mutation
+    try {
+      await updateEquipmentLoan(event.id, editingId, {
+        item: editLoan.item,
+        owner_name_fallback: editLoan.owner,
+        date_brought: editLoan.dateBrought,
+        date_returned: editLoan.dateReturned,
+        returned: editLoan.returned,
+      })
+    } catch (err) {
+      console.error("Failed to update loan in Supabase:", err)
+    }
   }
 
   const cancelEdit = () => {
@@ -70,10 +91,14 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
     setEditingId(null)
   }
 
-  const deleteLoan = (id: string) => {
+  const deleteLoan = async (id: string) => {
     setLoans((prev) => prev.filter((loan) => loan.id !== id))
     setDeletingId(null)
-    // TODO: persist loan deletion via backend mutation
+    try {
+      await deleteEquipmentLoan(event.id, id)
+    } catch (err) {
+      console.error("Failed to delete loan in Supabase:", err)
+    }
   }
 
   return (
@@ -224,13 +249,21 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
                       <label className="flex items-center gap-2 cursor-pointer">
                         <Checkbox
                           checked={loan.returned}
-                          onCheckedChange={(value) =>
+                          onCheckedChange={async (value) => {
+                            const isReturned = value === true
                             setLoans((prev) =>
                               prev.map((item) =>
-                                item.id === loan.id ? { ...item, returned: value === true } : item,
+                                item.id === loan.id ? { ...item, returned: isReturned } : item,
                               ),
                             )
-                          }
+                            try {
+                              await updateEquipmentLoan(event.id, loan.id, {
+                                returned: isReturned,
+                              })
+                            } catch (err) {
+                              console.error("Failed to update loan returned status in Supabase:", err)
+                            }
+                          }}
                         />
                         <span className="text-sm">{loan.returned ? 'Yes' : 'No'}</span>
                       </label>

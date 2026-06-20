@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { StatusBadge } from "@/components/status-badge"
 import type { CulinaryEvent } from "@/lib/data"
+import { updateEvent, toggleArchiveEvent } from "@/app/actions/events"
 
 function Stat({ icon: Icon, label, value }: { icon: typeof Users; label: string; value: string }) {
   return (
@@ -55,7 +56,7 @@ export function EventHeader({ event: initialEvent }: { event: CulinaryEvent }) {
     setIsEditing(!isEditing)
   }
 
-  const handleSaveEdits = () => {
+  const handleSaveEdits = async () => {
     const updatedEvent = {
       ...event,
       ...editData,
@@ -63,23 +64,37 @@ export function EventHeader({ event: initialEvent }: { event: CulinaryEvent }) {
       budget: Number(editData.budget),
     }
     setEvent(updatedEvent)
-    // TODO: Persist changes via Supabase mutation (update event in database)
     setIsEditing(false)
+    try {
+      await updateEvent(event.id, {
+        name: editData.name,
+        date: editData.date,
+        location: editData.location,
+        attendees: Number(editData.attendees),
+        budget: Number(editData.budget),
+      })
+    } catch (err) {
+      console.error("Failed to update event in Supabase:", err)
+    }
   }
 
   const handleArchiveClick = () => {
     setShowArchiveConfirm(true)
   }
 
-  const handleConfirmArchive = () => {
+  const handleConfirmArchive = async () => {
     const updatedEvent = {
       ...event,
       isArchived: !isArchived,
     }
     setEvent(updatedEvent)
     setIsArchived(!isArchived)
-    // TODO: Persist archive status via Supabase mutation
     setShowArchiveConfirm(false)
+    try {
+      await toggleArchiveEvent(event.id, isArchived)
+    } catch (err) {
+      console.error("Failed to toggle archive status in Supabase:", err)
+    }
   }
 
   return (

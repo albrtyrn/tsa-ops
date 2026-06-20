@@ -15,6 +15,13 @@ const typeIcon: Record<ActionItem["type"], typeof Users> = {
   Budget: Wallet,
 }
 
+const typeTab: Record<ActionItem["type"], string> = {
+  Staffing: "staffing",
+  Shopping: "shopping",
+  Menu: "menu",
+  Budget: "reimbursements",
+}
+
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
@@ -104,7 +111,7 @@ export function ActionRequired() {
                         className="text-primary hover:bg-accent hover:text-primary-foreground"
                         nativeButton={false}
                         render={
-                          <Link href={`/events/${item.eventId}`}>
+                          <Link href={`/events/${item.eventId}?tab=${typeTab[item.type]}`}>
                             Resolve
                             <ChevronRight data-icon="inline-end" />
                           </Link>

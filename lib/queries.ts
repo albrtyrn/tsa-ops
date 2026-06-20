@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase-server"
 
 export async function fetchEventDetails(id: string) {
+  // Validate UUID format first to avoid Postgres cast errors on mock IDs
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  if (!uuidRegex.test(id)) {
+    return null
+  }
+
   let supabase
   try {
     supabase = await createClient()
@@ -27,7 +33,7 @@ export async function fetchEventDetails(id: string) {
     .single()
 
   if (error) {
-    console.error("Error fetching event details:", error)
+    console.error("Error fetching event details:", error.message, "Details:", error.details, "Hint:", error.hint, error)
     return null
   }
 
