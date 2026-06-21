@@ -10,16 +10,18 @@ export async function proxy(request: NextRequest) {
     },
   })
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   // Safe early return forwarding context
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!rawUrl || !supabaseAnonKey) {
     console.error("Supabase environmental keys are missing!")
     return NextResponse.next({
       request: request
     })
   }
+
+  const supabaseUrl = rawUrl.replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "")
 
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

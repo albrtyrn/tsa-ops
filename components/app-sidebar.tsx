@@ -10,6 +10,7 @@ import {
   BarChart3,
   Settings,
   LogOut,
+  ChefHat,
 } from "lucide-react"
 import Image from "next/image"
 
@@ -31,6 +32,7 @@ import { logoutAction } from "@/app/actions/auth"
 const navItems = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Events", href: "/events", icon: CalendarDays },
+  { title: "Recipes", href: "/dashboard/recipes", icon: ChefHat },
   { title: "Analytics", href: "/analytics", icon: BarChart3 },
   { title: "Settings", href: "/settings", icon: Settings },
 ]
