@@ -11,6 +11,8 @@ import {
   Settings,
   LogOut,
   ChefHat,
+  Car,
+  Package,
 } from "lucide-react"
 import Image from "next/image"
 
@@ -32,7 +34,9 @@ import { logoutAction } from "@/app/actions/auth"
 const navItems = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Events", href: "/events", icon: CalendarDays },
-  { title: "Recipes", href: "/dashboard/recipes", icon: ChefHat },
+  { title: "Recipe Vault", href: "/dashboard/recipes", icon: ChefHat },
+  { title: "Driver Roster", href: "/dashboard/logistics/drivers", icon: Car },
+  { title: "Inventory & Custody", href: "/dashboard/logistics/inventory", icon: Package },
   { title: "Analytics", href: "/analytics", icon: BarChart3 },
   { title: "Settings", href: "/settings", icon: Settings },
 ]
