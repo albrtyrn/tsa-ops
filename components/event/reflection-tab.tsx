@@ -9,10 +9,23 @@ import { Textarea } from "@/components/ui/textarea"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty"
 import type { CulinaryEvent } from "@/lib/data"
+import { updateEventReflection } from "@/app/actions/events"
 
 export function ReflectionTab({ event }: { event: CulinaryEvent }) {
   const [whatWorked, setWhatWorked] = useState(event.reflection.whatWorked)
   const [whatFailed, setWhatFailed] = useState(event.reflection.whatFailed)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      await updateEventReflection(event.id, { whatWorked, whatFailed })
+    } catch (err) {
+      console.error("Failed to save reflection:", err)
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   return (
     <div className="grid gap-4 lg:grid-cols-2">
@@ -43,7 +56,9 @@ export function ReflectionTab({ event }: { event: CulinaryEvent }) {
               />
             </Field>
             <div className="flex justify-end">
-              <Button size="sm">Save reflection</Button>
+              <Button size="sm" onClick={handleSave} disabled={isSaving}>
+                {isSaving ? "Saving..." : "Save reflection"}
+              </Button>
             </div>
           </FieldGroup>
         </CardContent>
