@@ -4,28 +4,6 @@ import { CalendarCheck, Users, Wallet } from "lucide-react"
 import { motion } from "framer-motion"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { metrics } from "@/lib/data"
-
-const cards = [
-  {
-    label: "Active Events",
-    value: String(metrics.activeEvents),
-    hint: "In planning or ready",
-    icon: CalendarCheck,
-  },
-  {
-    label: "Confirmed Volunteers",
-    value: String(metrics.totalVolunteers),
-    hint: "Across all active events",
-    icon: Users,
-  },
-  {
-    label: "Planned Budget",
-    value: `$${metrics.plannedBudget.toLocaleString()}`,
-    hint: "Allocated for upcoming events",
-    icon: Wallet,
-  },
-]
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -61,7 +39,28 @@ const hoverTransition = {
   damping: 22,
 }
 
-export function MetricCards() {
+export function MetricCards({ metrics }: { metrics: { activeEvents: number; totalVolunteers: number; plannedBudget: number } }) {
+  const cards = [
+    {
+      label: "Active Events",
+      value: String(metrics.activeEvents),
+      hint: "In planning or ready",
+      icon: CalendarCheck,
+    },
+    {
+      label: "Confirmed Volunteers",
+      value: String(metrics.totalVolunteers),
+      hint: "Across all active events",
+      icon: Users,
+    },
+    {
+      label: "Planned Budget",
+      value: `$${metrics.plannedBudget.toLocaleString()}`,
+      hint: "Allocated for upcoming events",
+      icon: Wallet,
+    },
+  ]
+
   return (
     <motion.div
       className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"

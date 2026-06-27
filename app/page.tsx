@@ -7,7 +7,7 @@ import { ActionRequired } from "@/components/dashboard/action-required"
 import { EventCard } from "@/components/event-card"
 import { Button } from "@/components/ui/button"
 import { events as mockEvents } from "@/lib/data"
-import { fetchAllEvents } from "@/lib/queries"
+import { fetchAllEvents, fetchTotalConfirmedVolunteers, fetchActionItems } from "@/lib/queries"
 
 export default async function DashboardPage() {
   let events = await fetchAllEvents()
@@ -15,6 +15,12 @@ export default async function DashboardPage() {
     events = mockEvents
   }
   const upcoming = events.filter((e) => e.status !== "Completed")
+  const activeEvents = upcoming.length
+  const plannedBudget = upcoming.reduce((sum, e) => sum + (e.budget || 0), 0)
+  const totalVolunteers = await fetchTotalConfirmedVolunteers()
+  const metrics = { activeEvents, totalVolunteers, plannedBudget }
+
+  const actionItems = await fetchActionItems()
 
   return (
     <main className="flex flex-1 flex-col gap-8 p-4 md:p-8">
@@ -26,9 +32,9 @@ export default async function DashboardPage() {
         }
       />
 
-      <MetricCards />
+      <MetricCards metrics={metrics} />
 
-      <ActionRequired />
+      <ActionRequired actionItems={actionItems} />
 
       <section className="flex flex-col gap-3">
         <div className="flex items-center justify-between">

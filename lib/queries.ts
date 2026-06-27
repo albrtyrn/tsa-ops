@@ -335,3 +335,40 @@ export async function fetchTotalConfirmedVolunteers() {
 
   return count || 0
 }
+
+export async function fetchActionItems() {
+  let supabase
+  try {
+    supabase = await createClient()
+  } catch (e) {
+    console.warn("Failed to initialize server client in fetchActionItems. Falling back to empty array.")
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from("action_items")
+    .select(`
+      id,
+      event_id,
+      type,
+      title,
+      description,
+      events ( name )
+    `)
+    .eq("resolved", false)
+    .order("created_at", { ascending: false })
+
+  if (error) {
+    console.error("Error fetching action items:", error.message)
+    return []
+  }
+
+  return data.map((item: any) => ({
+    id: item.id,
+    eventId: item.event_id,
+    eventName: item.events?.name || "Unknown Event",
+    type: item.type,
+    title: item.title,
+    description: item.description,
+  }))
+}
