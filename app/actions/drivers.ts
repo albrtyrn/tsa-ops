@@ -23,7 +23,7 @@ export async function fetchAllDrivers(): Promise<Driver[]> {
     .order("driver_name", { ascending: true })
 
   if (error) {
-    console.error("Error fetching drivers:", error)
+    console.error("Error fetching drivers:")
     return []
   }
 
@@ -52,7 +52,7 @@ export async function addDriver(driver: {
     .select()
 
   if (error) {
-    console.error("Error adding driver:", error)
+    console.error("Error adding driver:")
     throw new Error(error.message)
   }
 
@@ -70,7 +70,7 @@ export async function updateDriverStatus(driverId: string, isActive: boolean) {
     .select()
 
   if (error) {
-    console.error("Error updating driver status:", error)
+    console.error("Error updating driver status:")
     throw new Error(error.message)
   }
 
@@ -88,7 +88,7 @@ export async function updateDriverCapacity(driverId: string, notes: string) {
     .select()
 
   if (error) {
-    console.error("Error updating driver capacity:", error)
+    console.error("Error updating driver capacity:")
     throw new Error(error.message)
   }
 

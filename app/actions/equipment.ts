@@ -31,7 +31,7 @@ export async function addEquipmentLoan(
     .select()
 
   if (error) {
-    console.error("Error adding equipment loan:", error)
+    console.error("Error adding equipment loan:")
     throw new Error(error.message)
   }
 
@@ -61,7 +61,7 @@ export async function updateEquipmentLoan(
     .select()
 
   if (error) {
-    console.error("Error updating equipment loan:", error)
+    console.error("Error updating equipment loan:")
     throw new Error(error.message)
   }
 
@@ -79,7 +79,7 @@ export async function deleteEquipmentLoan(eventId: string, loanId: string) {
     .eq("event_id", eventId)
 
   if (error) {
-    console.error("Error deleting equipment loan:", error)
+    console.error("Error deleting equipment loan:")
     throw new Error(error.message)
   }
 

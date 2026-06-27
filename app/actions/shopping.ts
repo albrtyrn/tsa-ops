@@ -27,7 +27,7 @@ export async function addShoppingItem(
     .select()
 
   if (error) {
-    console.error("Error adding shopping item:", error)
+    console.error("Error adding shopping item:")
     throw new Error(error.message)
   }
 
@@ -55,7 +55,7 @@ export async function updateShoppingItem(
     .select()
 
   if (error) {
-    console.error("Error updating shopping item:", error)
+    console.error("Error updating shopping item:")
     throw new Error(error.message)
   }
 
@@ -73,7 +73,7 @@ export async function deleteShoppingItem(eventId: string, itemId: string) {
     .eq("event_id", eventId)
 
   if (error) {
-    console.error("Error deleting shopping item:", error)
+    console.error("Error deleting shopping item:")
     throw new Error(error.message)
   }
 
@@ -108,7 +108,7 @@ export async function addGroceryRun(
     .select()
 
   if (error) {
-    console.error("Error adding grocery run:", error)
+    console.error("Error adding grocery run:")
     throw new Error(error.message)
   }
 
@@ -138,7 +138,7 @@ export async function updateGroceryRun(
     .select()
 
   if (error) {
-    console.error("Error updating grocery run:", error)
+    console.error("Error updating grocery run:")
     throw new Error(error.message)
   }
 
@@ -156,7 +156,7 @@ export async function deleteGroceryRun(eventId: string, runId: string) {
     .eq("event_id", eventId)
 
   if (error) {
-    console.error("Error deleting grocery run:", error)
+    console.error("Error deleting grocery run:")
     throw new Error(error.message)
   }
 

@@ -39,7 +39,7 @@ export async function addReimbursement(
     .select()
 
   if (error) {
-    console.error("Error adding reimbursement:", error)
+    console.error("Error adding reimbursement:")
     throw new Error(error.message)
   }
 
@@ -69,7 +69,7 @@ export async function updateReimbursement(
     .select()
 
   if (error) {
-    console.error("Error updating reimbursement:", error)
+    console.error("Error updating reimbursement:")
     throw new Error(error.message)
   }
 
@@ -87,7 +87,7 @@ export async function deleteReimbursement(eventId: string, reimbursementId: stri
     .eq("event_id", eventId)
 
   if (error) {
-    console.error("Error deleting reimbursement:", error)
+    console.error("Error deleting reimbursement:")
     throw new Error(error.message)
   }
 
