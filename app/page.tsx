@@ -6,7 +6,7 @@ import { MetricCards } from "@/components/dashboard/metric-cards"
 import { ActionRequired } from "@/components/dashboard/action-required"
 import { EventCard } from "@/components/event-card"
 import { Button } from "@/components/ui/button"
-import { events as mockEvents } from "@/lib/data"
+import { events as mockEvents, type CulinaryEvent } from "@/lib/data"
 import { fetchAllEvents } from "@/lib/queries"
 
 export default async function DashboardPage() {
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {upcoming.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard key={event.id} event={event as CulinaryEvent} />
           ))}
         </div>
       </section>

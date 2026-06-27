@@ -43,7 +43,7 @@ const itemVariants = {
     y: 0,
     opacity: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 260,
       damping: 25,
     },
@@ -56,7 +56,7 @@ const hoverAction = {
 }
 
 const hoverTransition = {
-  type: "spring",
+  type: "spring" as const,
   stiffness: 300,
   damping: 22,
 }

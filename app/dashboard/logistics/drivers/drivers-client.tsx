@@ -129,7 +129,7 @@ export default function DriversVaultClient({ initialDrivers }: DriversVaultClien
       
       await updateDriverStatus(driverId, currentStatus)
     } catch (err) {
-      console.error("Failed to update driver status:", err)
+      console.error("Failed to update driver status:")
       // Rollback on error
       setDrivers((prev) =>
         prev.map((d) => (d.id === driverId ? { ...d, is_active: !currentStatus } : d))
@@ -161,7 +161,7 @@ export default function DriversVaultClient({ initialDrivers }: DriversVaultClien
         )
         setEditingId(null)
       } catch (err) {
-        console.error("Failed to save driver capacity:", err)
+        console.error("Failed to save driver capacity:")
       }
     })
   }

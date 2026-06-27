@@ -43,6 +43,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
     if (!newItem.name.trim() || !newItem.quantity.trim()) return
     
     // Optimistic UI update
+    const previousState = [...shoppingGroups]
     const tempId = `item-${Date.now()}`
     setShoppingGroups((prev) =>
       prev.map((group) =>
@@ -67,7 +68,8 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
         category: selectedCategory,
       })
     } catch (err) {
-      console.error("Failed to persist new shopping item in Supabase:", err)
+      console.error("Failed to persist new shopping item in Supabase:")
+      setShoppingGroups(previousState)
     }
   }
 
@@ -81,6 +83,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
     if (!editingId || !editItem.name.trim() || !editItem.quantity.trim()) return
     
     // Optimistic UI update
+    const previousState = [...shoppingGroups]
     setShoppingGroups((prev) =>
       prev.map((group) => ({
         ...group,
@@ -95,7 +98,8 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
         quantity: editItem.quantity,
       })
     } catch (err) {
-      console.error("Failed to update shopping item in Supabase:", err)
+      console.error("Failed to update shopping item in Supabase:")
+      setShoppingGroups(previousState)
     }
   }
 
@@ -111,6 +115,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
 
   const deleteItem = async (id: string) => {
     // Optimistic UI update
+    const previousState = [...shoppingGroups]
     setShoppingGroups((prev) =>
       prev.map((group) => ({
         ...group,
@@ -122,7 +127,8 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
     try {
       await deleteShoppingItem(event.id, id)
     } catch (err) {
-      console.error("Failed to delete shopping item in Supabase:", err)
+      console.error("Failed to delete shopping item in Supabase:")
+      setShoppingGroups(previousState)
     }
   }
 
@@ -186,7 +192,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                 </div>
                 <select
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  onChange={(e) => setSelectedCategory(e.target.value as "Produce" | "Protein" | "Dry Goods" | "Misc")}
                   className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 text-foreground"
                 >
                   {shoppingGroups.map((group) => (
@@ -258,6 +264,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                                 <Checkbox
                                   checked={item.checked}
                                   onCheckedChange={(value) => {
+                                    const previousState = [...shoppingGroups]
                                     setShoppingGroups((prev) =>
                                       prev.map((groupItem) => ({
                                         ...groupItem,
@@ -267,7 +274,10 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                                       })),
                                     )
                                     updateShoppingItem(event.id, item.id, { checked: value === true })
-                                      .catch((err) => console.error("Failed to update check status:", err))
+                                      .catch((err) => {
+                                        console.error("Failed to update check status:")
+                                        setShoppingGroups(previousState)
+                                      })
                                   }}
                                 />
                                 <span className={item.checked ? "text-muted-foreground line-through" : "text-foreground font-medium"}>

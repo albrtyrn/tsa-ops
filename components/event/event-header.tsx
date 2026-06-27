@@ -86,11 +86,11 @@ export function EventHeader({ event: initialEvent }: { event: CulinaryEvent }) {
         budget: Number(editData.budget),
         venue_status: editData.venue_status,
         funding_status: editData.funding_status,
-        google_sheets_link: editData.google_sheets_link || null,
-        debrief_doc_link: editData.debrief_doc_link || null,
+        google_sheets_link: editData.google_sheets_link || undefined,
+        debrief_doc_link: editData.debrief_doc_link || undefined,
       })
     } catch (err) {
-      console.error("Failed to update event in Supabase:", err)
+      console.error("Failed to update event in Supabase:")
     }
   }
 
@@ -109,7 +109,7 @@ export function EventHeader({ event: initialEvent }: { event: CulinaryEvent }) {
     try {
       await toggleArchiveEvent(event.id, isArchived)
     } catch (err) {
-      console.error("Failed to toggle archive status in Supabase:", err)
+      console.error("Failed to toggle archive status in Supabase:")
     }
   }
 

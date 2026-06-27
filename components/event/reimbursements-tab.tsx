@@ -63,7 +63,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
         receipt_status: newEntry.receiptStatus,
       })
     } catch (err) {
-      console.error("Failed to persist new reimbursement in Supabase:", err)
+      console.error("Failed to persist new reimbursement in Supabase:")
     }
   }
 
@@ -89,7 +89,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
         status: editEntry.status,
       })
     } catch (err) {
-      console.error("Failed to update reimbursement in Supabase:", err)
+      console.error("Failed to update reimbursement in Supabase:")
     }
   }
 
@@ -111,7 +111,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
     try {
       await deleteReimbursement(event.id, id)
     } catch (err) {
-      console.error("Failed to delete reimbursement in Supabase:", err)
+      console.error("Failed to delete reimbursement in Supabase:")
     }
   }
 
@@ -290,8 +290,8 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
                     </select>
                   ) : (
                     <Badge variant="outline" className={
-                      entry.status === "Approved" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
-                      entry.status === "Draft" ? "bg-slate-100 text-slate-700 border-slate-200" :
+                      entry.status === "Approved by Treasurer" || entry.status === "Venmo Sent" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                      entry.status === "Pending Review" ? "bg-slate-100 text-slate-700 border-slate-200" :
                       "bg-amber-50 text-amber-700 border-amber-200"
                     }>
                       {entry.status}

@@ -42,6 +42,7 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
 
   const saveNewLoan = async () => {
     if (!newLoan.item.trim() || !newLoan.owner.trim()) return
+    const previousState = [...loans]
     const tempId = `loan-${Date.now()}`
     setLoans((prev) => [...prev, { id: tempId, ...newLoan }])
     setNewLoan({ ...defaultLoan })
@@ -54,7 +55,8 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
         date_returned: newLoan.dateReturned,
       })
     } catch (err) {
-      console.error("Failed to persist new loan in Supabase:", err)
+      console.error("Failed to persist new loan in Supabase:")
+      setLoans(previousState)
     }
   }
 
@@ -66,6 +68,7 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
 
   const saveEditLoan = async () => {
     if (!editingId || !editLoan.item.trim() || !editLoan.owner.trim()) return
+    const previousState = [...loans]
     setLoans((prev) => prev.map((loan) => (loan.id === editingId ? editLoan : loan)))
     setEditingId(null)
     try {
@@ -77,7 +80,8 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
         returned: editLoan.returned,
       })
     } catch (err) {
-      console.error("Failed to update loan in Supabase:", err)
+      console.error("Failed to update loan in Supabase:")
+      setLoans(previousState)
     }
   }
 
@@ -92,12 +96,14 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
   }
 
   const deleteLoan = async (id: string) => {
+    const previousState = [...loans]
     setLoans((prev) => prev.filter((loan) => loan.id !== id))
     setDeletingId(null)
     try {
       await deleteEquipmentLoan(event.id, id)
     } catch (err) {
-      console.error("Failed to delete loan in Supabase:", err)
+      console.error("Failed to delete loan in Supabase:")
+      setLoans(previousState)
     }
   }
 
@@ -251,6 +257,7 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
                           checked={loan.returned}
                           onCheckedChange={async (value) => {
                             const isReturned = value === true
+                            const previousState = [...loans]
                             setLoans((prev) =>
                               prev.map((item) =>
                                 item.id === loan.id ? { ...item, returned: isReturned } : item,
@@ -261,7 +268,8 @@ export function EquipmentTab({ event }: { event: CulinaryEvent }) {
                                 returned: isReturned,
                               })
                             } catch (err) {
-                              console.error("Failed to update loan returned status in Supabase:", err)
+                              console.error("Failed to update loan returned status in Supabase:")
+                              setLoans(previousState)
                             }
                           }}
                         />

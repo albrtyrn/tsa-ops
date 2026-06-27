@@ -24,7 +24,7 @@ export async function fetchAllRecipes(): Promise<Recipe[]> {
     .order("created_at", { ascending: false })
 
   if (error) {
-    console.error("Error fetching recipes:", error)
+    console.error("Error fetching recipes:")
     return []
   }
 
@@ -51,7 +51,7 @@ export async function addRecipe(recipe: {
     .select()
 
   if (error) {
-    console.error("Error adding recipe:", error)
+    console.error("Error adding recipe:")
     throw new Error(error.message)
   }
 
@@ -70,7 +70,7 @@ export async function addTastingNote(recipeId: string, note: string) {
     .single()
 
   if (fetchError || !recipe) {
-    console.error("Error fetching recipe for tasting note:", fetchError)
+    console.error("Error fetching recipe for tasting note:")
     throw new Error("Recipe not found.")
   }
 
@@ -87,7 +87,7 @@ export async function addTastingNote(recipeId: string, note: string) {
     .select()
 
   if (updateError) {
-    console.error("Error adding tasting note:", updateError)
+    console.error("Error adding tasting note:")
     throw new Error(updateError.message)
   }
 

@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/page-header"
 import { EventCard } from "@/components/event-card"
 import { Button } from "@/components/ui/button"
 import { events as initialEvents } from "@/lib/data"
+import { CulinaryEvent } from "@/lib/data"
 import { supabase } from "@/lib/supabase"
 
 const containerVariants = {
@@ -26,7 +27,7 @@ const itemVariants = {
     y: 0,
     opacity: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 260,
       damping: 25,
     },
@@ -83,10 +84,10 @@ export default function EventsPage() {
               isArchived: event.is_archived,
             }
           })
-          setEvents(mapped)
+          setEvents(mapped as CulinaryEvent[])
         }
       } catch (err) {
-        console.warn("Database connection issue. Mock data displayed:", err)
+        console.warn("Database connection issue. Mock data displayed:")
       }
     }
     loadEvents()
