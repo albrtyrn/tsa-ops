@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { actionItems, type ActionItem } from "@/lib/data"
+import { type ActionItem } from "@/lib/data"
 
 const typeIcon: Record<ActionItem["type"], typeof Users> = {
   Staffing: Users,
@@ -64,7 +64,7 @@ const hoverTransition = {
   damping: 22,
 }
 
-export function ActionRequired() {
+export function ActionRequired({ actionItems }: { actionItems: ActionItem[] }) {
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-center gap-2">
