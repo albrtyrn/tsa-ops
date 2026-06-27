@@ -3,6 +3,8 @@ import { fetchAllEvents } from "@/lib/queries"
 import { EventsClient } from "./events-client"
 import { NewEventModal } from "@/components/event/new-event-modal"
 
+import { CulinaryEvent } from "@/lib/data"
+
 export default async function EventsPage() {
   const events = await fetchAllEvents()
 
@@ -13,7 +15,7 @@ export default async function EventsPage() {
         description="All planned, in-progress, and completed culinary events."
         actions={<NewEventModal />}
       />
-      <EventsClient events={events} />
+      <EventsClient events={events as CulinaryEvent[]} />
     </main>
   )
 }
