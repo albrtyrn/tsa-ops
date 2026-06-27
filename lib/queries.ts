@@ -93,7 +93,8 @@ export async function fetchEventDetails(id: string) {
   const staffingVal = totalStaff > 0 ? Math.round((confirmedStaff / totalStaff) * 100) : 0
 
   const uniqueMenuCats = new Set((event.menu || []).map((d: any) => d.category)).size
-  const menuVal = Math.min(100, Math.round((uniqueMenuCats / 3) * 100))
+  const expectedCats = event.expected_categories || Math.max(1, uniqueMenuCats)
+  const menuVal = Math.min(100, Math.round((uniqueMenuCats / expectedCats) * 100))
 
   const readiness = [
     { label: "Menu", value: menuVal },

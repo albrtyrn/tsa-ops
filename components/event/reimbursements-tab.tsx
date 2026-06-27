@@ -63,7 +63,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
         receipt_status: newEntry.receiptStatus,
       })
     } catch (err) {
-      console.error("Failed to persist new reimbursement in Supabase:", err)
+      console.error("Failed to persist new reimbursement in Supabase:")
     }
   }
 
@@ -89,7 +89,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
         status: editEntry.status,
       })
     } catch (err) {
-      console.error("Failed to update reimbursement in Supabase:", err)
+      console.error("Failed to update reimbursement in Supabase:")
     }
   }
 
@@ -111,7 +111,7 @@ export function ReimbursementsTab({ event }: { event: CulinaryEvent }) {
     try {
       await deleteReimbursement(event.id, id)
     } catch (err) {
-      console.error("Failed to delete reimbursement in Supabase:", err)
+      console.error("Failed to delete reimbursement in Supabase:")
     }
   }
 

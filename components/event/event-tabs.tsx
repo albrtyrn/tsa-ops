@@ -29,7 +29,7 @@ const tabs = [
 const tabTransition = {
   initial: { y: 15, opacity: 0 },
   animate: { y: 0, opacity: 1 },
-  transition: { duration: 0.3, ease: "easeOut" }
+  transition: { duration: 0.3, ease: "easeOut" as const }
 }
 
 export function EventTabs({ event }: { event: CulinaryEvent }) {

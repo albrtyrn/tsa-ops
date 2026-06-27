@@ -74,7 +74,7 @@ export function AppSidebar() {
           setProfile(null)
         }
       } catch (err) {
-        console.warn("Could not fetch user profile details:", err)
+        console.warn("Could not fetch user profile details:")
         setProfile(null)
       }
     }
