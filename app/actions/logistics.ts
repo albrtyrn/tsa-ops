@@ -155,6 +155,5 @@ export async function seedInitialResourcesIfEmpty() {
     ]
 
     await supabase.from("staff_resources").insert(sampleResources)
-    revalidatePath("/dashboard/logistics/inventory")
   }
 }

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useState, useTransition } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { 
   Plus, 
   Search, 

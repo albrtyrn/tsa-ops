@@ -260,8 +260,46 @@ export async function fetchAnalyticsData() {
     .order("date", { ascending: true })
 
   if (error) {
-    console.error("Error fetching analytics data:", error.message, "Details:", error.details, "Hint:", error.hint, error)
-    return []
+    console.warn("View view_analytics_budget_accuracy not found, falling back to manual in-memory calculations. Error details:", error.message)
+    
+    // Query raw events and reimbursements directly to compute statistics
+    const { data: dbEvents, error: dbError } = await supabase
+      .from("events")
+      .select(`
+        id,
+        name,
+        status,
+        date,
+        budget,
+        reimbursements(*)
+      `)
+      .order("date", { ascending: true })
+
+    if (dbError) {
+      console.error("Error in fallback analytics fetching:", dbError.message)
+      return []
+    }
+
+    return dbEvents.map((item: any) => {
+      const spent = (item.reimbursements || [])
+        .filter((r: any) => r.status === "Approved by Treasurer" || r.status === "Venmo Sent")
+        .reduce((sum: number, r: any) => sum + Number(r.amount), 0)
+      
+      const budget = Number(item.budget)
+      const variance = budget - spent
+      const budgetBurnPercentage = budget === 0 ? 0.0 : Number(((spent / budget) * 100).toFixed(2))
+
+      return {
+        eventId: item.id,
+        eventName: item.name,
+        status: item.status,
+        date: item.date,
+        budget: budget,
+        spent: spent,
+        variance: variance,
+        budgetBurnPercentage: budgetBurnPercentage,
+      }
+    })
   }
 
   return data.map((item: any) => ({
