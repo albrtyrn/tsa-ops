@@ -34,7 +34,8 @@ export type Dish = {
   servings: number
   estimatedCost: number
   recipe_status?: "Untested" | "In Progress" | "D-Day Ready"
-  google_doc_link?: string
+  google_doc_link?: string | null
+  recipe_id?: string | null
 }
 
 export type StaffMember = {

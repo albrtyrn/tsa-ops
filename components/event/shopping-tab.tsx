@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import type { CulinaryEvent, ShoppingGroup, ShoppingItem } from "@/lib/data"
+import type { CulinaryEvent, ShoppingGroup, ShoppingItem, GroceryRun } from "@/lib/data"
 import { addShoppingItem, updateShoppingItem, deleteShoppingItem } from "@/app/actions/shopping"
+import { addGroceryRun, deleteGroceryRun } from "@/app/actions/grocery-runs"
 
 const defaultItem: Omit<ShoppingItem, "id"> = {
   name: "",
@@ -25,12 +26,25 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
   const [editItem, setEditItem] = useState<ShoppingItem>({ id: "", ...defaultItem })
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
+  const [groceryRuns, setGroceryRuns] = useState<GroceryRun[]>(() => event.groceryRuns)
+  const [isAddingRun, setIsAddingRun] = useState(false)
+  const [newRun, setNewRun] = useState<Omit<GroceryRun, "id">>({
+    driver: "",
+    vehicle: "Sedan",
+    destination: "",
+    departure: "",
+    status: "Planned",
+  })
+  const allStaff = event.staffing.flatMap(g => g.members)
+
   useEffect(() => {
     setShoppingGroups(event.shopping)
     setSelectedCategory(event.shopping[0]?.category ?? "Produce")
     setIsAdding(false)
     setEditingId(null)
     setDeletingId(null)
+    setGroceryRuns(event.groceryRuns)
+    setIsAddingRun(false)
   }, [event.id])
 
   const handleAddItem = () => {
@@ -127,8 +141,42 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
     try {
       await deleteShoppingItem(event.id, id)
     } catch (err) {
-      console.error("Failed to delete shopping item in Supabase:")
+      console.error("Failed to delete item in Supabase:", err)
       setShoppingGroups(previousState)
+    }
+  }
+
+  const handleAddRun = () => {
+    setIsAddingRun(true)
+    setNewRun({
+      driver: allStaff[0]?.name || "",
+      vehicle: "Sedan",
+      destination: "",
+      departure: "",
+      status: "Planned",
+    })
+  }
+
+  const saveNewRun = async () => {
+    if (!newRun.driver || !newRun.destination) return
+    
+    const tempId = `run-${Date.now()}`
+    const previousState = [...groceryRuns]
+    
+    setGroceryRuns(prev => [...prev, { id: tempId, ...newRun }])
+    setIsAddingRun(false)
+
+    try {
+      await addGroceryRun(event.id, {
+        driver_name_fallback: newRun.driver,
+        vehicle: newRun.vehicle,
+        destination: newRun.destination,
+        departure: newRun.departure,
+        status: newRun.status
+      })
+    } catch (err) {
+      console.error("Failed to add grocery run:", err)
+      setGroceryRuns(previousState)
     }
   }
 
@@ -333,11 +381,82 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
 
       <div className="grid gap-4">
         <Card className="border border-border bg-card shadow-sm">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-semibold">Grocery Run Logistics</CardTitle>
+            <Button variant="outline" size="sm" onClick={handleAddRun}>
+              <Plus className="size-4 mr-1" />
+              Add Run
+            </Button>
           </CardHeader>
           <CardContent className="space-y-4">
-            {event.groceryRuns.map((run) => (
+            {isAddingRun ? (
+              <div className="rounded-lg border border-border bg-background p-4 shadow-sm mb-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="text-sm font-semibold">New Grocery Run</h4>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm" onClick={() => setIsAddingRun(false)}>
+                      <X className="size-4" />
+                    </Button>
+                    <Button variant="default" size="sm" onClick={saveNewRun}>
+                      Save
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                      Driver
+                    </div>
+                    <select
+                      className="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring text-foreground"
+                      value={newRun.driver}
+                      onChange={(e) => setNewRun({ ...newRun, driver: e.target.value })}
+                    >
+                      <option value="" disabled>Select Driver</option>
+                      {allStaff.map(staff => (
+                        <option key={staff.id} value={staff.name}>{staff.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                      Vehicle
+                    </div>
+                    <select
+                      className="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring text-foreground"
+                      value={newRun.vehicle}
+                      onChange={(e) => setNewRun({ ...newRun, vehicle: e.target.value as any })}
+                    >
+                      <option value="Sedan">Sedan</option>
+                      <option value="SUV">SUV</option>
+                      <option value="Minivan">Minivan</option>
+                      <option value="Pickup">Pickup</option>
+                    </select>
+                  </div>
+                  <div>
+                    <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                      Destination
+                    </div>
+                    <Input
+                      value={newRun.destination}
+                      onChange={(e) => setNewRun({ ...newRun, destination: e.target.value })}
+                      placeholder="e.costco"
+                    />
+                  </div>
+                  <div>
+                    <div className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+                      Departure Time
+                    </div>
+                    <Input
+                      value={newRun.departure}
+                      onChange={(e) => setNewRun({ ...newRun, departure: e.target.value })}
+                      placeholder="e.g. 10:00 AM"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null}
+            {groceryRuns.map((run) => (
               <div key={run.id} className="rounded-lg border border-border bg-background p-4 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
@@ -358,7 +477,7 @@ export function ShoppingTab({ event }: { event: CulinaryEvent }) {
                 </div>
               </div>
             ))}
-            {event.groceryRuns.length === 0 ? (
+            {groceryRuns.length === 0 && !isAddingRun ? (
               <p className="text-sm text-muted-foreground">No grocery runs are currently scheduled for this event.</p>
             ) : null}
           </CardContent>

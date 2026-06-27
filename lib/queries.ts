@@ -141,6 +141,7 @@ export async function fetchEventDetails(id: string) {
       estimatedCost: Number(d.estimated_cost),
       recipe_status: d.recipe_status,
       google_doc_link: d.google_doc_link,
+      recipe_id: d.recipe_id,
     })),
     staffing,
     timeline: (event.timeline || []).map((t: any) => ({
