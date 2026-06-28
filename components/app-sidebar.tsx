@@ -37,7 +37,7 @@ const navItems = [
   { title: "Recipe Vault", href: "/dashboard/recipes", icon: ChefHat },
   { title: "Driver Roster", href: "/dashboard/logistics/drivers", icon: Car },
   { title: "Inventory & Custody", href: "/dashboard/logistics/inventory", icon: Package },
-  { title: "Analytics", href: "/analytics", icon: BarChart3 },
+  { title: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
   { title: "Settings", href: "/settings", icon: Settings },
 ]
 

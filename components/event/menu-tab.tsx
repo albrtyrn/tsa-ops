@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import type { CulinaryEvent, Dish } from "@/lib/data"
 import { addDish, updateDish, deleteDish as deleteDishAction } from "@/app/actions/dishes"
+import { ImportRecipeModal } from "./import-recipe-modal"
 
 const defaultDish: Omit<Dish, "id"> = {
   name: "",
@@ -60,7 +61,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
         servings: newDish.servings,
         estimated_cost: newDish.estimatedCost,
         recipe_status: newDish.recipe_status,
-        google_doc_link: newDish.google_doc_link,
+        google_doc_link: newDish.google_doc_link || undefined,
       })
     } catch (err) {
       console.error("Failed to persist new dish in Supabase:")
@@ -127,14 +128,20 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
             Estimated food cost: <span className="tabular-nums">${total.toLocaleString()}</span>
           </p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleAddDish}
-        >
-          <Plus className="size-4" />
-          Add Dish
-        </Button>
+        <div className="flex gap-2">
+          <ImportRecipeModal
+            eventId={event.id}
+            onImport={(newDish) => setMenuItems(prev => [...prev, newDish])}
+          />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleAddDish}
+          >
+            <Plus className="size-4" />
+            Add Dish
+          </Button>
+        </div>
       </div>
 
       {isAdding ? (
@@ -217,7 +224,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
                   Recipe Google Doc Link
                 </div>
                 <Input
-                  value={newDish.google_doc_link}
+                  value={newDish.google_doc_link || ""}
                   placeholder="https://docs.google.com/document/..."
                   onChange={(e) => setNewDish({ ...newDish, google_doc_link: e.target.value })}
                 />

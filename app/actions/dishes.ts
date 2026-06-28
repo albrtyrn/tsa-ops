@@ -12,6 +12,7 @@ export async function addDish(
     estimated_cost: number
     recipe_status?: "Untested" | "In Progress" | "D-Day Ready"
     google_doc_link?: string
+    recipe_id?: string | null
   }
 ) {
   const supabase = await createClient()
@@ -27,6 +28,7 @@ export async function addDish(
         estimated_cost: dish.estimated_cost,
         recipe_status: dish.recipe_status || "Untested",
         google_doc_link: dish.google_doc_link || null,
+        recipe_id: dish.recipe_id || null,
       },
     ])
     .select()

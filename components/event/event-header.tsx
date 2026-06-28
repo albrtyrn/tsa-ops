@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { StatusBadge } from "@/components/status-badge"
 import type { CulinaryEvent } from "@/lib/data"
 import { updateEvent, toggleArchiveEvent } from "@/app/actions/events"
+import { generateAIPlan } from "@/app/actions/ai-plan"
+import { Loader2 } from "lucide-react"
 
 function Stat({ icon: Icon, label, value }: { icon: typeof Users; label: string; value: string }) {
   return (
@@ -50,6 +52,7 @@ export function EventHeader({ event: initialEvent }: { event: CulinaryEvent }) {
   })
   const [isArchived, setIsArchived] = useState(event.isArchived)
   const [showArchiveConfirm, setShowArchiveConfirm] = useState(false)
+  const [isGeneratingPlan, setIsGeneratingPlan] = useState(false)
 
   const handleEditToggle = () => {
     if (isEditing) {
@@ -113,6 +116,18 @@ export function EventHeader({ event: initialEvent }: { event: CulinaryEvent }) {
     }
   }
 
+  const handleGeneratePlan = async () => {
+    setIsGeneratingPlan(true)
+    try {
+      await generateAIPlan(event.id)
+      // In a real app we might show a toast with the result message
+    } catch (err) {
+      console.error("Failed to generate AI plan:", err)
+    } finally {
+      setIsGeneratingPlan(false)
+    }
+  }
+
   return (
     <div className="flex flex-col gap-5">
       <Button
@@ -170,8 +185,17 @@ export function EventHeader({ event: initialEvent }: { event: CulinaryEvent }) {
                 <Archive data-icon="inline-start" />
                 {isArchived ? "Unarchive" : "Archive"}
               </Button>
-              <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
-                <Sparkles data-icon="inline-start" />
+              <Button 
+                size="sm" 
+                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
+                onClick={handleGeneratePlan}
+                disabled={isGeneratingPlan}
+              >
+                {isGeneratingPlan ? (
+                  <Loader2 className="size-4 animate-spin mr-1" />
+                ) : (
+                  <Sparkles data-icon="inline-start" className="mr-1" />
+                )}
                 Generate Plan (AI)
               </Button>
             </>
