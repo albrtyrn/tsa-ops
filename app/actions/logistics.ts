@@ -31,7 +31,7 @@ export async function fetchAllStaffResources(): Promise<StaffResource[]> {
     .order("facility_name", { ascending: true })
 
   if (error) {
-    console.error("Error fetching staff resources:", error)
+    console.error("Error fetching staff resources:")
     return []
   }
 
@@ -58,7 +58,7 @@ export async function updateStaffResource(
     .select()
 
   if (error) {
-    console.error("Error updating staff resource:", error)
+    console.error("Error updating staff resource:")
     throw new Error(error.message)
   }
 
@@ -76,7 +76,7 @@ export async function fetchAllInventoryItems(): Promise<InventoryItem[]> {
     .order("item_name", { ascending: true })
 
   if (error) {
-    console.error("Error fetching inventory items:", error)
+    console.error("Error fetching inventory items:")
     return []
   }
 
@@ -108,7 +108,7 @@ export async function assignInventoryCustody(item: {
       .select()
 
     if (error) {
-      console.error("Error updating inventory custody:", error)
+      console.error("Error updating inventory custody:")
       throw new Error(error.message)
     }
     resultData = data[0]
@@ -128,7 +128,7 @@ export async function assignInventoryCustody(item: {
       .select()
 
     if (error) {
-      console.error("Error inserting inventory custody:", error)
+      console.error("Error inserting inventory custody:")
       throw new Error(error.message)
     }
     resultData = data[0]

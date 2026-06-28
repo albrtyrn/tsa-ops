@@ -15,7 +15,7 @@ export default async function EventWorkspacePage({
   // Try fetching from database first, fallback to mock data
   let event = await fetchEventDetails(id)
   if (!event) {
-    event = getEvent(id) || null
+    event = (getEvent(id) as any) || null
   }
 
   if (!event) {

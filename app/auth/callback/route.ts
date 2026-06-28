@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
           return NextResponse.redirect(new URL("/onboarding", requestUrl.origin))
         }
       } catch (e) {
-        console.warn("Callback onboarding check failed:", e)
+        console.warn("Callback onboarding check failed:")
       }
     }
   }

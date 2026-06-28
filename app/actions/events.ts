@@ -28,7 +28,7 @@ export async function createEvent(formData: {
     .select()
 
   if (error) {
-    console.error("Error creating event:", error)
+    console.error("Error creating event:")
     throw new Error(error.message)
   }
 
@@ -60,7 +60,7 @@ export async function updateEvent(
     .select()
 
   if (error) {
-    console.error("Error updating event:", error)
+    console.error("Error updating event:")
     throw new Error(error.message)
   }
 
@@ -80,7 +80,7 @@ export async function toggleArchiveEvent(eventId: string, currentArchiveStatus: 
     .select()
 
   if (error) {
-    console.error("Error toggling archive status:", error)
+    console.error("Error toggling archive status:")
     throw new Error(error.message)
   }
 
@@ -108,7 +108,7 @@ export async function updateEventReflection(
     .select()
 
   if (error) {
-    console.error("Error updating reflection:", error)
+    console.error("Error updating reflection:")
     throw new Error(error.message)
   }
 

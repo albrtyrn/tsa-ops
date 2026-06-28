@@ -32,7 +32,7 @@ export async function addDish(
     .select()
 
   if (error) {
-    console.error("Error adding dish:", error)
+    console.error("Error adding dish:")
     throw new Error(error.message)
   }
 
@@ -62,7 +62,7 @@ export async function updateDish(
     .select()
 
   if (error) {
-    console.error("Error updating dish:", error)
+    console.error("Error updating dish:")
     throw new Error(error.message)
   }
 
@@ -80,7 +80,7 @@ export async function deleteDish(eventId: string, dishId: string) {
     .eq("event_id", eventId)
 
   if (error) {
-    console.error("Error deleting dish:", error)
+    console.error("Error deleting dish:")
     throw new Error(error.message)
   }
 

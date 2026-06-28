@@ -63,7 +63,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
         google_doc_link: newDish.google_doc_link,
       })
     } catch (err) {
-      console.error("Failed to persist new dish in Supabase:", err)
+      console.error("Failed to persist new dish in Supabase:")
     }
   }
 
@@ -90,7 +90,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
         google_doc_link: editDish.google_doc_link || null,
       })
     } catch (err) {
-      console.error("Failed to update dish in Supabase:", err)
+      console.error("Failed to update dish in Supabase:")
     }
   }
 
@@ -112,7 +112,7 @@ export function MenuTab({ event }: { event: CulinaryEvent }) {
     try {
       await deleteDishAction(event.id, id)
     } catch (err) {
-      console.error("Failed to delete dish in Supabase:", err)
+      console.error("Failed to delete dish in Supabase:")
     }
   }
 

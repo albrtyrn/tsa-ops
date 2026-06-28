@@ -29,7 +29,7 @@ export async function addTimelineStep(
     .select()
 
   if (error) {
-    console.error("Error adding timeline step:", error)
+    console.error("Error adding timeline step:")
     throw new Error(error.message)
   }
 
@@ -58,7 +58,7 @@ export async function updateTimelineStep(
     .select()
 
   if (error) {
-    console.error("Error updating timeline step:", error)
+    console.error("Error updating timeline step:")
     throw new Error(error.message)
   }
 
@@ -76,7 +76,7 @@ export async function deleteTimelineStep(eventId: string, stepId: string) {
     .eq("event_id", eventId)
 
   if (error) {
-    console.error("Error deleting timeline step:", error)
+    console.error("Error deleting timeline step:")
     throw new Error(error.message)
   }
 

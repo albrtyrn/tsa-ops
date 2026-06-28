@@ -89,7 +89,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
         confirmed: newMember.confirmed,
       })
     } catch (err) {
-      console.error("Failed to persist new staff member in Supabase:", err)
+      console.error("Failed to persist new staff member in Supabase:")
     }
   }
 
@@ -126,7 +126,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
         confirmed: editMember.confirmed,
       })
     } catch (err) {
-      console.error("Failed to update staff member in Supabase:", err)
+      console.error("Failed to update staff member in Supabase:")
     }
   }
 
@@ -153,7 +153,7 @@ export function StaffingTab({ event }: { event: CulinaryEvent }) {
     try {
       await deleteStaffMember(event.id, id)
     } catch (err) {
-      console.error("Failed to delete staff member in Supabase:", err)
+      console.error("Failed to delete staff member in Supabase:")
     }
   }
 

@@ -30,7 +30,7 @@ export async function addStaffMember(
     .select()
 
   if (error) {
-    console.error("Error adding staff member:", error)
+    console.error("Error adding staff member:")
     throw new Error(error.message)
   }
 
@@ -59,7 +59,7 @@ export async function updateStaffMember(
     .select()
 
   if (error) {
-    console.error("Error updating staff member:", error)
+    console.error("Error updating staff member:")
     throw new Error(error.message)
   }
 
@@ -77,7 +77,7 @@ export async function deleteStaffMember(eventId: string, staffId: string) {
     .eq("event_id", eventId)
 
   if (error) {
-    console.error("Error deleting staff member:", error)
+    console.error("Error deleting staff member:")
     throw new Error(error.message)
   }
 

@@ -1,4 +1,5 @@
 "use client"
+import { Badge } from "@/components/ui/badge"
 
 import * as React from "react"
 import { useState, useTransition } from "react"
@@ -97,7 +98,7 @@ export default function InventoryVaultClient({
         setSavingState((prev) => ({ ...prev, [resourceId]: "idle" }))
       }, 2000)
     } catch (err) {
-      console.error("Failed to update facility resource:", err)
+      console.error("Failed to update facility resource:")
       setSavingState((prev) => ({ ...prev, [resourceId]: "idle" }))
     }
   }
