@@ -36,7 +36,7 @@ const hoverAction = {
 const hoverTransition = {
   type: "spring" as const,
   stiffness: 300,
-  damping: 22,
+  damping: 24,
 }
 
 export function MetricCards({ metrics }: { metrics: { activeEvents: number; totalVolunteers: number; plannedBudget: number } }) {
